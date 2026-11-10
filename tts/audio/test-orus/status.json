@@ -1,8 +1,6 @@
 {
  "model": "gemini-3.8-flash-lite-tts",
  "voice": "Orus",
- "ok": [
-  "06"
- ],
+ "ok": [],
  "errors": {}
 }
