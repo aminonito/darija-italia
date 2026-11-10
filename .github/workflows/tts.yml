@@ -11,7 +11,7 @@ permissions:
 
 concurrency:
   group: tts
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   tts:
@@ -27,6 +27,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python3 scripts/tts.py
       - name: Salva audio nella repository
+        if: always()
         run: |
           git config user.name "darija-tts-bot"
           git config user.email "actions@users.noreply.github.com"

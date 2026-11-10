@@ -65,14 +65,19 @@ def main():
                     msg = f"HTTP {e.code}: {e.read().decode(errors='replace')[:400]}"
                     st["errors"][bid] = msg
                     print(name, bid, msg)
-                    if e.code in (429, 500, 503):
-                        time.sleep(30 * (attempt + 1))
+                    if e.code == 429 and ("PerDay" in msg or "per day" in msg.lower() or "daily" in msg.lower()):
+                        st["errors"]["_"] = "Limite giornaliero gratuito raggiunto"
+                        json.dump(st, open(f"{out}/status.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+                        print(json.dumps(st, ensure_ascii=False)); return
+                    if e.code in (429, 500, 503) and attempt < 3:
+                        time.sleep(20 * (attempt + 1))
                         continue
                     break
                 except Exception as e:  # noqa
                     st["errors"][bid] = repr(e)[:400]
                     print(name, bid, repr(e))
                     time.sleep(10)
+            json.dump(st, open(f"{out}/status.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
             time.sleep(4)  # resta sotto il limite al minuto del piano gratuito
         json.dump(st, open(f"{out}/status.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
         status_all[name] = st
