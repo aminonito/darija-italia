@@ -1,0 +1,8 @@
+{
+ "voice": "Sulafat",
+ "model": "gemini-3.8-flash-lite-tts",
+ "style": "Read this as a friendly Moroccan news presenter from Casablanca. Speak natural Moroccan Darija, not Modern Standard Arabic. Warm, clear, medium pace:",
+ "blocks": {
+  "06": "ولكن شنو كيعني هادشي فجيبك؟ العائلة العادية فإيطاليا كتستهلك تقريبا ألفين وسبع مية كيلوواط فالعام. إلى وصلك التخفيض كامل، غادي تربح تقريبا ربعين أورو فالعام. نصيحة: إلى عندك كونطرا بتمن ثابت، يمكن ما يبانش ليك التخفيض دغيا. شوف الكونطرا ديالك."
+ }
+}
