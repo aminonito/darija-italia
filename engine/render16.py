@@ -311,11 +311,13 @@ def build_audio(path):
         c = chords[b % 4]; a = int(b * bar * SR); L = int(bar * SR); seg = np.arange(L) / SR
         env = np.minimum(1, seg / 0.4) * np.exp(-seg * 0.35)
         tone = sum(np.sin(2 * np.pi * mid(m) * seg) + 0.3 * np.sin(4 * np.pi * mid(m) * seg) for m in c) + 0.6 * np.sin(2 * np.pi * mid(c[0] - 24) * seg)
-        e = min(N, a + L); music[a:e] += (tone * env)[:e - a] * 0.05
+        e = min(N, a + L)
+        if e > a: music[a:e] += (tone * env)[:e - a] * 0.05
     for k in range(int(TOTAL / beat) + 2):
         a = int(k * beat * SR); L = int(0.25 * SR); seg = np.arange(L) / SR
         hit = np.sin(2 * np.pi * (50 + 80 * np.exp(-seg * 30)) * seg) * np.exp(-seg * 12) if k % 2 == 0 else rng.normal(0, 1, L) * np.exp(-seg * 25) * 0.3
-        e = min(N, a + L); music[a:e] += hit[:e - a] * 0.2
+        e = min(N, a + L)
+        if e > a: music[a:e] += hit[:e - a] * 0.2
     env = np.convolve(np.abs(voice), np.ones(2400) / 2400, "same")
     duck = np.convolve(np.where(env > 0.008, 0.28, 1.0), np.ones(9600) / 9600, "same").astype(np.float32)
     music *= duck; f0 = int(0.4 * SR); music[:f0] *= np.linspace(0, 1, f0); music[-2 * SR:] *= np.linspace(1, 0, 2 * SR)
