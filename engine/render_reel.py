@@ -5,6 +5,8 @@ Uso: python3 engine/render_reel.py reels/reel-NN.json AUDIO.wav OUT.mp4 [t1 t2 .
 import json, math, os, subprocess, sys, wave
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from align import align, key_time
 
 W, H, FPS = 1080, 1920, 30
 FD = os.environ.get("FONTS", "/home/claude/fonts/")
@@ -29,17 +31,17 @@ with wave.open(sys.argv[2]) as w:
     sr = w.getframerate(); X = np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(np.float32) / 32768
 nz = np.where(np.abs(X) > 0.01)[0]; X = X[max(0, nz[0] - int(.05 * sr)): nz[-1] + int(.15 * sr)]
 VD = len(X) / sr; TOTAL = LEAD + VD + TAIL
-lens = [len(s["text"]) + 1 for s in S]; tot = sum(lens)
-STARTS = [LEAD + VD * sum(lens[:i]) / tot for i in range(len(S))]
+FULL = " ".join(s["text"] for s in S)
+ALN = align(X, sr, FULL)
+OFF = []; acc = 0
+for s_ in S: OFF.append(acc); acc += len(s_["text"]) + 1
+def scene_of(pos): return max(k for k in range(len(S)) if OFF[k] <= pos)
+STARTS = []
+for k in range(len(S)):
+    first = [w for w in ALN if w[3] >= OFF[k]]
+    STARTS.append(LEAD + (first[0][1] if first else 0.0))
 NH = sum(1 for s in S if s["hook"])
-
-# parole con tempi proporzionali
-WORDS = []
-for i, s in enumerate(S):
-    ws = s["text"].split(); L = sum(len(w) + 1 for w in ws); acc = 0
-    d = VD * lens[i] / tot
-    for w in ws:
-        a = STARTS[i] + d * acc / L; acc += len(w) + 1; WORDS.append((w, a, STARTS[i] + d * acc / L, i))
+WORDS = [(w, LEAD + a, LEAD + b, scene_of(pos)) for w, a, b, pos in ALN]
 CH = []; cur = []
 for w in WORDS:
     if cur and (len(cur) >= 3 or w[3] != cur[-1][3]): CH.append(cur); cur = []

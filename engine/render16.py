@@ -12,6 +12,8 @@ import importlib.util, json, math, os, subprocess, sys, wave
 from multiprocessing import Pool
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from align import align, key_time
 
 W, H, FPS = 1920, 1080, 30
 CX = W // 2
@@ -60,6 +62,7 @@ for i, b in enumerate(BLOCKS):
     if len(nz): x = x[max(0, nz[0] - int(0.05 * sr)): nz[-1] + int(0.15 * sr)]
     AUD.append((x, sr))
 DUR = [len(x) / sr for x, sr in AUD]
+ALN = [align(x, sr, b["text"]) for (x, sr), b in zip(AUD, BLOCKS)]  # tempi reali delle parole (pause della voce)
 BLEN = [LEAD + d + TAIL + (OUTRO if i == len(BLOCKS) - 1 else 0) for i, d in enumerate(DUR)]
 START = [sum(BLEN[:i]) for i in range(len(BLOCKS))]
 TOTAL = sum(BLEN)
@@ -70,9 +73,10 @@ def kt(i, key):
     """tempo locale (s dall'inizio del blocco) di una parola chiave o di un numero."""
     if key is None: return None
     if isinstance(key, (int, float)): return float(key)
-    txt = BLOCKS[i]["text"].replace("\n", " "); pos = txt.find(key)
-    if pos < 0: raise KeyError(f"blocco {i}: '{key}' non trovato")
-    return LEAD + DUR[i] * pos / len(txt)
+    try:
+        return LEAD + key_time(ALN[i], BLOCKS[i]["text"], key)
+    except KeyError:
+        raise KeyError(f"blocco {i}: '{key}' non trovato")
 
 
 # ---------------- sfondo e header ----------------
@@ -129,23 +133,15 @@ def header(i):
 
 # ---------------- sottotitoli ----------------
 def caption_chunks(i):
-    words = BLOCKS[i]["text"].replace("\n", " ").split()
     chunks, cur = [], []
-    for w in words:
-        if cur and (len(cur) >= 7 or len(" ".join(cur + [w])) > 46):
+    for w, a, b, _ in ALN[i]:
+        if cur and (len(cur) >= 7 or len(" ".join(x[0] for x in cur + [(w,)])) > 46):
             chunks.append(cur); cur = []
-        cur.append(w)
+        cur.append((w, LEAD + a, LEAD + b))
         if w[-1] in ".؟?!:،," and len(cur) >= 3:
             chunks.append(cur); cur = []
     if cur: chunks.append(cur)
-    total = sum(len(w) + 1 for w in words); acc = 0; out = []
-    for c in chunks:
-        wt = []
-        for w in c:
-            a = LEAD + DUR[i] * acc / total; acc += len(w) + 1
-            wt.append((w, a, LEAD + DUR[i] * acc / total))
-        out.append(wt)
-    return out
+    return chunks
 
 
 def draw_caption(img, chunks, t):
