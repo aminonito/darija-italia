@@ -361,9 +361,9 @@ def thumb(path):
     y = 300
     for line in T["title"]:
         txt, col = line if isinstance(line, tuple) else (line, WHITE)
-        f = fit(d, txt, "Tajawal-Black", 150, 1150)
+        f = fit(d, txt, "Tajawal-Black", 150, 980)
         d.text((W - 110, y), txt, font=f, fill=col + (255,), anchor="ra"); y += f.size + 30
-    d.text((470, 520), T["num"], font=fit(d, T["num"], "Tajawal-Black", 260, 680), fill=GOLD + (255,), anchor="mm")
+    d.text((470, 520), T["num"], font=fit(d, T["num"], "Tajawal-Black", 260, 600), fill=GOLD + (255,), anchor="mm")
     d.text((470, 690), T["numsub"], font=font("Tajawal-Bold", 48), fill=GREY + (255,), anchor="mm")
     for k, c in enumerate([(0, 146, 70), (244, 245, 240), (206, 43, 55)]):
         d.rectangle([W - 110 - 3 * 70 + k * 70, 900, W - 110 - 3 * 70 + k * 70 + 62, 912], fill=c + (255,))
