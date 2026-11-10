@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 W, H, FPS = 1080, 1920, 30
 FD = os.environ.get("FONTS", "/home/claude/fonts/")
 RED = (206, 43, 55); MGREEN = (0, 98, 51); GREEN = (0, 166, 81); WHITE = (245, 245, 242); GREY = (200, 200, 205); GOLD = (236, 196, 96)
-BRAND = "خبار إيطاليا بالدارجة"
+BRAND = "مغاربة إيطاليا"
 LEAD, TAIL = 0.25, 0.6
 _fc = {}
 
@@ -24,7 +24,7 @@ def ease_back(x):
     x = min(1, max(0, x)); c1 = 1.70158; c3 = c1 + 1; return 1 + c3 * (x - 1) ** 3 + c1 * (x - 1) ** 2
 
 
-R = json.load(open(sys.argv[1], encoding="utf-8")); S = R["scenes"]
+R = json.load(open(sys.argv[1], encoding="utf-8")); S = R["scenes"]; BRAND = R.get("brand", BRAND)
 with wave.open(sys.argv[2]) as w:
     sr = w.getframerate(); X = np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(np.float32) / 32768
 nz = np.where(np.abs(X) > 0.01)[0]; X = X[max(0, nz[0] - int(.05 * sr)): nz[-1] + int(.15 * sr)]
