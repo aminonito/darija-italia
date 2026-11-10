@@ -3,7 +3,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JOB = json.load(open(os.path.join(ROOT, "tts/jobs/pilota-01.json"), encoding="utf-8"))
 AUDIO_DIR = os.path.join(ROOT, "tts/audio/pilota-01")
 BRAND = "خبار إيطاليا بالدارجة"
-GOLD = (236, 196, 96); RED = (230, 90, 90); WHITE = (245, 245, 242); GREEN = (0, 190, 95)
+GREY = (175, 175, 182); GOLD = (236, 196, 96); RED = (230, 90, 90); WHITE = (245, 245, 242); GREEN = (0, 190, 95)
 T = JOB["blocks"]
 
 S_CAL = "Regione Calabria · Ripopola Calabria (ripopola.regione.calabria.it)"
@@ -11,7 +11,7 @@ S_BOL = "Consiglio dei ministri 9/11/2026 · MASE · decreto-legge Bollette"
 S_SIG = "Legge di bilancio 2026 · ddl Bilancio 2027, relazione tecnica"
 
 BLOCKS = [
- dict(audio="01.wav", text=T["01"], chapter="مقدمة", src="", items=[
+ dict(audio="../pilota-01-b01/01.wav", text=T["01"], chapter="مقدمة", src="", items=[
    dict(k="head", text="تلت خبار كيمسّو جيبك", at=0.2, until="واش عرفتي", y=380, size=110),
    dict(k="big", text="0 €", at="واش عرفتي", until="اليوم عندنا", y=470, size=280, sub="دار، إصلاح، وعشر سنين بلا كرا؟"),
    dict(k="head", text="خبار اليوم", at="اليوم عندنا"),
@@ -64,17 +64,17 @@ BLOCKS = [
    dict(k="big", text="≈ 40 €", at="إلى وصلك", until="ولكن ماشي", y=520, size=240, color=GREEN, sub="فالعام، إلى وصلك التخفيض كامل (تقدير)"),
    dict(k="rows", at="ولكن ماشي", until="نصيحة", y=420, gap=130, rows=[
      ("الحكومة", "−15 €/MWh", "ولكن ماشي"),
-     ("المعارضة", "1,4 € فالشهر", "واحد من المعارضة", WHITE),
+     ("المعارضة · فالشهر", "1,4 €", "واحد من المعارضة", WHITE),
    ]),
    dict(k="warn", text="ديكري: خاص البرلمان يصادق عليه ف60 يوم", at="والديكري", until="نصيحة", y=740),
    dict(k="big", text="كونطرا بتمن ثابت؟", at="نصيحة", y=500, size=130, color=GOLD, sub="يمكن ما يبانش ليك التخفيض دغيا · شوف الكونطرا ديالك"),
  ]),
- dict(audio="07.wav", text=T["07"], chapter="03 · الدخان", src=S_SIG, items=[
+ dict(audio="../pilota-01-b07/07.wav", text=T["07"], chapter="03 · الدخان", src=S_SIG, items=[
    dict(k="chapter", num="03", title="الدخان غادي يغلا", at=0.1, until="المرة الأولى"),
    dict(k="head", text="جوج زيادات ف2027", at="المرة الأولى", sub="تقديرات رسمية، الثمن كيتبدل من ماركة لماركة"),
    dict(k="rows", at="المرة الأولى", y=480, gap=150, size=56, rows=[
-     ("يناير 2027", "≈ +0,25 € للباكية", "المرة الأولى"),
-     ("فاتح يوليوز 2027", "≈ +0,13 € للباكية", "المرة التانية"),
+     ("يناير 2027 · للباكية", "≈ +0,25 €", "المرة الأولى"),
+     ("فاتح يوليوز 2027 · للباكية", "≈ +0,13 €", "المرة التانية"),
    ]),
    dict(k="text", text="الأتشيزا: من 32 حتى 35,50 € لكل 1000 سيجارة", at="الضريبة", until="المرة التانية", y=720, size=42, color=GREY),
    dict(k="warn", text="زيادة يوليوز مازال فقانون الميزانية، ما تصادقش عليها", at="رد البال", y=780),

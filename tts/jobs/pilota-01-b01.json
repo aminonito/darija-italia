@@ -1,0 +1,8 @@
+{
+ "voice": "Kore",
+ "model": "gemini-3.8-flash-tts",
+ "style": "Read this as a friendly Moroccan news presenter from Casablanca. Speak natural Moroccan Darija, not Modern Standard Arabic. Warm, clear, medium pace:",
+ "blocks": {
+  "01": "السلام عليكم خوتي وخواتاتي المغاربة اللي ساكنين فإيطاليا، ومرحبا بكم فـخبار إيطاليا بالدارجة.\nواش عرفتي بلي كاينة جهة فإيطاليا مستعدة تعطيك دار، وتصلحها ليك، وما تخلص فيها حتى ريال لمدة عشر سنين؟\nاليوم عندنا تلت خبار كيمسّو جيبك نيشان: الديور فابور فكالابريا، الفاتورة ديال الضو اللي غادي تنقص من يناير، والدخان اللي غادي يغلا مرتين فألفين وسبعة وعشرين.\nيالاه نبداو."
+ }
+}

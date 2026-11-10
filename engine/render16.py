@@ -52,7 +52,10 @@ def wav_read(p):
 
 AUD = []
 for i, b in enumerate(BLOCKS):
-    x, sr = wav_read(os.path.join(EP.AUDIO_DIR, b["audio"]))
+    ap = os.path.join(EP.AUDIO_DIR, b["audio"])
+    if not os.path.exists(ap):  # anteprima senza audio: silenzio stimato dal testo
+        print("ATTENZIONE: manca", ap); AUD.append((np.zeros(int(24000 * len(b["text"]) / 16), np.float32), 24000)); continue
+    x, sr = wav_read(ap)
     nz = np.where(np.abs(x) > 0.01)[0]
     if len(nz): x = x[max(0, nz[0] - int(0.05 * sr)): nz[-1] + int(0.15 * sr)]
     AUD.append((x, sr))
