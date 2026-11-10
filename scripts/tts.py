@@ -35,7 +35,7 @@ def synth(model, voice, text):
 
 
 def main():
-    status_all = {}
+    status_all = {}; stop = set()
     for job_path in sorted(glob.glob("tts/jobs/*.json")):
         name = os.path.splitext(os.path.basename(job_path))[0]
         out = f"tts/audio/{name}"
@@ -51,7 +51,7 @@ def main():
             st["errors"]["_"] = "Manca il secret GEMINI_API_KEY nella repository"
         for bid, text in sorted(job["blocks"].items()):
             wav = f"{out}/{bid}.wav"
-            if os.path.exists(wav) or not KEY:
+            if os.path.exists(wav) or not KEY or model in stop:
                 continue
             prompt = f"{style}\n\n{text}" if style else text
             for attempt in range(6):
@@ -70,7 +70,7 @@ def main():
                     if e.code == 429 and ("PerDay" in msg or "per day" in msg.lower() or "daily" in msg.lower()):
                         st["errors"]["_"] = "Limite giornaliero gratuito raggiunto"
                         json.dump(st, open(f"{out}/status.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-                        print(json.dumps(st, ensure_ascii=False)); return
+                        print(json.dumps(st, ensure_ascii=False)); stop.add(model); break
                     if e.code in (429, 500, 503) and attempt < 3:
                         time.sleep(20 * (attempt + 1))
                         continue
