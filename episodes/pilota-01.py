@@ -2,7 +2,7 @@ import json, os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JOB = json.load(open(os.path.join(ROOT, "tts/jobs/pilota-01.json"), encoding="utf-8"))
 AUDIO_DIR = os.path.join(ROOT, "tts/audio/pilota-01")
-BRAND = "خبار إيطاليا بالدارجة"
+BRAND = "مغاربة إيطاليا"
 GREY = (175, 175, 182); GOLD = (236, 196, 96); RED = (230, 90, 90); WHITE = (245, 245, 242); GREEN = (0, 190, 95)
 T = JOB["blocks"]
 
@@ -85,7 +85,7 @@ BLOCKS = [
      ("الديور فابور فكالابريا", "01", "الديور"), ("الضو غادي ينقص", "02", "الضو"), ("الدخان غادي يغلا", "03", "والدخان", RED),
    ]),
    dict(k="big", text="ونتا؟", at="ونتا", until="وإلى عجبك", y=450, size=200, color=GOLD, sub="تقدر تسكن فقرية صغيرة فكالابريا عشر سنين؟ كتب لينا فالكومونتير"),
-   dict(k="cta", at="وإلى عجبك", text="ابوني فالقناة", sub="كل نهار خبار إيطاليا بالدارجة"),
+   dict(k="cta", at="وإلى عجبك", text="ابوني فالقناة", sub="كل نهار خبر مفيد للمغاربة فإيطاليا"),
  ]),
 ]
 
