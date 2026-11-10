@@ -4,7 +4,9 @@ JOB = json.load(open(os.path.join(ROOT, "tts/jobs/pilota-01.json"), encoding="ut
 AUDIO_DIR = os.path.join(ROOT, "tts/audio/pilota-01")
 BRAND = "مغاربة إيطاليا"
 GREY = (175, 175, 182); GOLD = (236, 196, 96); RED = (230, 90, 90); WHITE = (245, 245, 242); GREEN = (0, 190, 95)
-T = JOB["blocks"]
+T = dict(JOB["blocks"])
+T.update(json.load(open(os.path.join(ROOT, "tts/jobs/pilota-01-b07.json"), encoding="utf-8"))["blocks"])
+T.update(json.load(open(os.path.join(ROOT, "tts/jobs/pilota-01-b01.json"), encoding="utf-8"))["blocks"])
 
 S_CAL = "Regione Calabria · Ripopola Calabria (ripopola.regione.calabria.it)"
 S_BOL = "Consiglio dei ministri 9/11/2026 · MASE · decreto-legge Bollette"
