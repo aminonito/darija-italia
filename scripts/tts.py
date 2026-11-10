@@ -44,6 +44,8 @@ def main():
         model = job.get("model", "gemini-3.8-flash-lite-tts")
         voice = job.get("voice", "Charon")
         style = job.get("style", "").strip()
+        if "lite" not in model:  # il modello Flash (non lite) legge ad alta voce l'istruzione: solo testo
+            style = ""
         st = {"model": model, "voice": voice, "ok": [], "errors": {}}
         if not KEY:
             st["errors"]["_"] = "Manca il secret GEMINI_API_KEY nella repository"
