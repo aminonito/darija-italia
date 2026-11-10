@@ -92,7 +92,7 @@ def frame(t):
     z = 1 + 0.05 * t / TOTAL
     bw, bh = int(W / z), int(H / z); ox = (W - bw) // 2 + int(14 * math.sin(t * 0.4)); oy = (H - bh) // 2
     img = BG.crop((ox, oy, ox + bw, oy + bh)).resize((W, H), Image.BILINEAR)
-    img.alpha_composite(HDR, (0, 0)); d = ImageDraw.Draw(img)
+    img.alpha_composite(HDR, (0, 0)); pb = Image.new("RGBA", (W, 260), (0, 0, 0, 0)); d = ImageDraw.Draw(pb)
     # barra progresso a segmenti (RTL)
     sw = (W - 112 - (NH - 1) * 10) / NH
     for k in range(NH):
@@ -100,6 +100,7 @@ def frame(t):
         d.rounded_rectangle((x1, 230, x2, 240), 5, fill=(255, 255, 255, 60))
         fr = 1 if k < i else (min(1, max(0, lt / ((STARTS[k + 1] if k + 1 < len(S) else TOTAL) - STARTS[k]))) if k == i else 0)
         if fr > 0: d.rounded_rectangle((x2 - sw * fr, 230, x2, 240), 5, fill=WHITE + (255,))
+    img.alpha_composite(pb, (0, 0)); d = ImageDraw.Draw(img)
     lay = Image.new("RGBA", (W, H), (0, 0, 0, 0)); L = ImageDraw.Draw(lay)
     p = ease_back(lt / 0.4)
     if s["hook"]:
