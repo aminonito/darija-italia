@@ -62,7 +62,7 @@ def main():
                     print(name, bid, "ok", round(len(pcm) / 48000, 1), "s")
                     break
                 except urllib.error.HTTPError as e:
-                    msg = f"HTTP {e.code}: {e.read().decode(errors='replace')[:400]}"
+                    msg = f"HTTP {e.code}: {e.read().decode(errors='replace')[:1500]}"
                     st["errors"][bid] = msg
                     print(name, bid, msg)
                     if e.code == 429 and ("PerDay" in msg or "per day" in msg.lower() or "daily" in msg.lower()):
