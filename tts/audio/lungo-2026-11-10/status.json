@@ -1,0 +1,10 @@
+{
+ "model": "gemini-3.8-flash-tts",
+ "voice": "Kore",
+ "ok": [
+  "A",
+  "B",
+  "C"
+ ],
+ "errors": {}
+}
