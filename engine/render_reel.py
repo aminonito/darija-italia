@@ -7,6 +7,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from align import align, key_time
+import visuals as V
 
 W, H, FPS = 1080, 1920, 30
 FD = os.environ.get("FONTS", "/home/claude/fonts/")
@@ -112,7 +113,13 @@ def frame(t):
         L.rounded_rectangle((x0 + wtot - nw - 46, y - 52, x0 + wtot - 10, y + 52), 52, fill=(0, 0, 0, 80))
         L.text((x0 + wtot - nw / 2 - 28, y), num, font=fn, fill=WHITE + (230,), anchor="mm")
         L.text((x0 + (wtot - nw - 46) / 2 + 10, y + 2), s["hook"], font=f, fill=WHITE + (255,), anchor="mm")
-    big = s["big"]; core = big.replace("+", "").replace("€", "").strip()
+    if s.get("v"):  # modello grafico (mappa, personaggi, icone, barre, calendario, confronto, passi)
+        V.draw(lay, tuple(s["v"].get("box", (60, 480, 1020, 1250))), s["v"], lt)
+        if s.get("sub"):
+            a = int(255 * ease((lt - 0.25) / 0.4)); fs = fit(L, s["sub"], "Tajawal-Bold", 56, 960)
+            L.text((W / 2, 1300), s["sub"], font=fs, fill=GREY + (a,), anchor="mm")
+        img.alpha_composite(lay); return finish(img, d, t, i, s)
+    big = s.get("big", ""); core = big.replace("+", "").replace("€", "").strip()
     if core.isdigit():
         n = int(core); v = int(round(n * ease(lt / 0.9))); txt = big.replace(core, str(v))
         fb = font("Tajawal-Black", 330); col = GOLD
@@ -126,6 +133,10 @@ def frame(t):
         a = int(255 * ease((lt - 0.25) / 0.4)); fs = fit(L, s["sub"], "Tajawal-Bold", 60, 960)
         L.text((W / 2, 1080), s["sub"], font=fs, fill=GREY + (a,), anchor="mm")
     img.alpha_composite(lay)
+    return finish(img, d, t, i, s)
+
+
+def finish(img, d, t, i, s):
     # sottotitoli
     for c in CH:
         if c[0][1] - 0.05 <= t < c[-1][2] + 0.08:

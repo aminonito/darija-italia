@@ -14,6 +14,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from align import align, key_time
+import visuals as V
 
 W, H, FPS = 1920, 1080, 30
 CX = W // 2
@@ -186,7 +187,9 @@ def draw_items(lay, i, t):
         a, t0 = alpha(i, it, t)
         if a <= 0.01: continue
         al = int(255 * a); k = it["k"]; lt = t - t0
-        if k == "chapter":
+        if k in V.DRAW:  # modelli grafici condivisi (map, people, icons, bars, calendar, vs, steps)
+            V.draw(lay, tuple(it.get("box", (160, 170, 1760, 850))), dict(it, type=k), lt, a); d = ImageDraw.Draw(lay)
+        elif k == "chapter":
             e = ease(lt / 0.5); dx = int(70 * (1 - e))
             d.text((CX + 60 + dx, 470), it["num"], font=font("Tajawal-Black", 300), fill=GREEN + (al,), anchor="lm")
             d.rectangle([CX + 20, 330, CX + 26, 610], fill=DIM + (al,))
