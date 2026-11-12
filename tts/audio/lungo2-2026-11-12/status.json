@@ -1,12 +1,6 @@
 {
  "model": "gemini-3.8-flash-tts",
  "voice": "Zephyr",
- "ok": [
-  "A",
-  "B",
-  "C",
-  "D",
-  "E"
- ],
+ "ok": [],
  "errors": {}
 }
