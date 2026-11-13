@@ -1,0 +1,14 @@
+{
+ "model": "gemini-3.8-flash-lite-tts",
+ "voice": "Iapetus",
+ "ok": [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G"
+ ],
+ "errors": {}
+}
