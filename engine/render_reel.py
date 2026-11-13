@@ -140,8 +140,13 @@ def finish(img, d, t, i, s):
     # sottotitoli
     for c in CH:
         if c[0][1] - 0.05 <= t < c[-1][2] + 0.08:
-            f = font("Tajawal-ExtraBold", 80); ws = [d.textlength(w[0], font=f) for w in c]; sp = 22
-            totw = sum(ws) + sp * (len(ws) - 1); x = W / 2 + totw / 2
+            fz = 80
+            while True:  # riduce il font se la riga supera il bordo
+                f = font("Tajawal-ExtraBold", fz); ws = [d.textlength(w[0], font=f) for w in c]; sp = 22
+                totw = sum(ws) + sp * (len(ws) - 1)
+                if totw <= 980 or fz <= 50: break
+                fz -= 4
+            x = W / 2 + totw / 2
             for (w, a, b, _), wd in zip(c, ws):
                 x -= wd
                 if a <= t < b + 0.05: d.rounded_rectangle((x - 10, 1360, x + wd + 10, 1490), 22, fill=RED + (255,))
