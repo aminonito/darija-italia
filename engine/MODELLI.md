@@ -32,3 +32,10 @@ trending-up truck user users wallet world x. Altre: copiarle da @tabler/icons (n
 Regole testo: valori con %, +, ≈, € in stringhe brevi; nei fumetti evitare numeri con segni attaccati a parole arabe.
 Dati mappa: openpolis/geojson-italy (CC BY 4.0, dati ISTAT), Natural Earth (pubblico dominio). La vista med è tagliata
 sopra il 29° parallelo.
+
+## Versione italiana (ITALIA TIMES, video lunghi 16:9)
+`visuals.configure(lang="it", fonts=..., accent=...)` cambia direzione (sinistra→destra), nomi di città/regioni e mesi in italiano.
+Nel motore ITALIA TIMES si usa tramite `engine/bridge_italia_times.py`: in scenes.py dopo `from wide import *`
+`import sys; sys.path.insert(0, "/home/claude/darija-italia/engine"); import bridge_italia_times` e poi
+`sc.vis(tipo, t0, t1=None, box=(x1,y1,x2,y2), **campi)` (box default 160,170,1760,880; area utile y 150-880).
+Le etichette delle regioni scendono da sole se c'è una città vicina; con molte città usa `labels=False`.

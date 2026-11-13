@@ -25,9 +25,26 @@ CARD = (30, 33, 42)
 _fc = {}
 
 
+LANG = "ar"      # "ar" = darija (destra→sinistra), "it" = italiano (sinistra→destra)
+FONTMAP = {}     # nome logico ("Tajawal-Black", "Tajawal-ExtraBold", "Tajawal-Bold") → percorso .ttf
+
+
+def configure(lang=None, fonts=None, accent=None):
+    """es. configure(lang="it", fonts={"Tajawal-Black": PB, "Tajawal-ExtraBold": PB, "Tajawal-Bold": PS}, accent=(126,214,160))"""
+    global LANG, GOLD
+    if lang: LANG = lang
+    if fonts: FONTMAP.update(fonts); _fc.clear()
+    if accent: GOLD = tuple(accent)
+
+
+def rtl(): return LANG == "ar"
+
+
 def font(n, s):
     s = max(8, int(s))
-    if (n, s) not in _fc: _fc[(n, s)] = ImageFont.truetype(FD + n + ".ttf", s, layout_engine=ImageFont.Layout.RAQM)
+    if (n, s) not in _fc:
+        p = FONTMAP.get(n, FD + n + ".ttf")
+        _fc[(n, s)] = ImageFont.truetype(p, s, layout_engine=ImageFont.Layout.RAQM)
     return _fc[(n, s)]
 
 
@@ -105,6 +122,14 @@ REG_AR = {"Lombardia": "لومبارديا", "Piemonte": "بييمونتي", "Ve
           "Calabria": "كالابريا", "Sardegna": "سردينيا", "Liguria": "ليغوريا", "Marche": "ماركي", "Abruzzo": "أبروتسو",
           "Umbria": "أومبريا", "Basilicata": "بازيليكاتا", "Molise": "موليزي", "Friuli-Venezia Giulia": "فريولي",
           "Trentino-Alto Adige": "ترينتينو", "Valle d'Aosta": "فالي داوستا", "ITA": "إيطاليا", "MAR": "المغرب"}
+CITY_IT = {"Tanger": "Tangeri", "Tetouan": "Tetuan", "Fes": "Fès", "Meknes": "Meknès", "Marrakech": "Marrakech"}
+REG_IT = {"ITA": "Italia", "MAR": "Marocco", "Valle d'Aosta": "Valle d'Aosta"}
+
+
+def city_label(c): return CITY_AR.get(c, c) if rtl() else CITY_IT.get(c, c)
+def reg_label(r): return REG_AR.get(r, r) if rtl() else REG_IT.get(r, r)
+
+
 VIEWS = {"italy": (6.4, 18.8, 36.4, 47.2), "north": (6.5, 14.0, 43.5, 47.2), "south": (12.2, 18.8, 36.5, 42.6),
          "med": (-11.0, 19.5, 29.0, 47.5)}
 _mc = {}
@@ -186,11 +211,13 @@ def draw_map(lay, box, spec, lt, a=1.0):
         for p in polys[name]:
             pts = [tr(box[0] + x, box[1] + y) for x, y in p]
             L.polygon(pts, fill=c + (int(al * e * 0.85 * pulse),), outline=WHITE + (int(al * e),), width=3)
+        pin_xy = [tr(*P(*CITY[(q if isinstance(q, str) else q["city"])])) for q in spec.get("pins", [])]
         if spec.get("labels", True):
             xs = [x for p in polys[name] for x, _ in p]; ys = [y for p in polys[name] for _, y in p]
             big = max(polys[name], key=len); mx = sum(x for x, _ in big) / len(big); my = sum(y for _, y in big) / len(big)
             lx, ly = tr(box[0] + mx, box[1] + my)
-            _label(L, lx, ly + 40 * sz, REG_AR.get(name, name), int(al * e), int(36 * sz))
+            if any(abs(lx - px) < 170 * sz and abs(ly + 40 * sz - py) < 90 * sz for px, py in pin_xy): ly += 70 * sz
+            _label(L, lx, ly + 40 * sz, reg_label(name), int(al * e), int(36 * sz))
     # rotta
     rt = spec.get("route")
     if rt:
@@ -213,7 +240,7 @@ def draw_map(lay, box, spec, lt, a=1.0):
             if prog >= 1:
                 _pin(L, *B, GREEN, al, sz)
             for cname, pt, ok in ((rt[0], A, True), (rt[1], B, prog >= 1)):
-                if ok: _label(L, pt[0], pt[1], CITY_AR.get(cname, cname), al, int(38 * sz))
+                if ok: _label(L, pt[0], pt[1], city_label(cname), al, int(38 * sz))
     # città (etichette sotto se troppo vicine a una precedente)
     placed = []
     for j, pn in enumerate(spec.get("pins", [])):
@@ -226,7 +253,7 @@ def draw_map(lay, box, spec, lt, a=1.0):
         placed.append((x, y, pn.get("anchor", "above")))
         yy = y - 40 * (1 - ease((lt - t0) / 0.3))
         _pin(L, x, yy, col(pn.get("color", "red")), int(al * min(1, e)), sz * max(0.3, e))
-        _label(L, x, yy, pn.get("label", CITY_AR.get(pn["city"], pn["city"])), int(al * ease((lt - t0) / 0.3)), int(36 * sz),
+        _label(L, x, yy, pn.get("label", city_label(pn["city"])), int(al * ease((lt - t0) / 0.3)), int(36 * sz),
                anchor=pn.get("anchor", "above"))
 
 
@@ -354,7 +381,7 @@ def draw_people(lay, box, spec, lt, a=1.0):
     x1, y1, x2, y2 = box; ppl = spec["people"]; n = len(ppl); bw = x2 - x1
     ph = spec.get("h", min((y2 - y1) * 0.74, bw / n * 1.3 / 0.92))
     L = ImageDraw.Draw(lay); al = int(255 * a)
-    xs = [x2 - bw * (j + 0.5) / n for j in range(n)]  # da destra a sinistra (RTL)
+    xs = [(x2 - bw * (j + 0.5) / n) if rtl() else (x1 + bw * (j + 0.5) / n) for j in range(n)]
     ground = y2
     for j, r in enumerate(ppl):
         t0 = 0.12 + 0.18 * j
@@ -398,7 +425,7 @@ def draw_icons(lay, box, spec, lt, a=1.0):
         t0 = spec.get("t", 0.15) + spec.get("gap", 0.35) * j
         if lt < t0: continue
         e = ease_back((lt - t0) / 0.4); aj = int(al * ease((lt - t0) / 0.25))
-        cx = x2 - cw * (j % cols + 0.5); cy = y1 + chh * (j // cols + 0.5)
+        cx = (x2 - cw * (j % cols + 0.5)) if rtl() else (x1 + cw * (j % cols + 0.5)); cy = y1 + chh * (j // cols + 0.5)
         s = min(cw, chh) * 0.92; r = s * 0.42 * max(0.05, e)
         L.rounded_rectangle((cx - s / 2, cy - s / 2, cx + s / 2, cy + s / 2), s * 0.14, fill=CARD + (int(aj * 0.9),))
         L.ellipse((cx - r * 0.82, cy - s * 0.12 - r * 0.82, cx + r * 0.82, cy - s * 0.12 + r * 0.82), fill=c + (int(aj * 0.25),))
@@ -417,14 +444,25 @@ def draw_bars(lay, box, spec, lt, a=1.0):
         t0 = spec.get("t", 0.2) + spec.get("gap", 0.3) * j
         if lt < t0: continue
         e = ease((lt - t0) / 0.9); aj = int(al * ease((lt - t0) / 0.25)); cy = y1 + rh * (j + 0.5); bh = min(rh * 0.5, 110)
-        f = fit(L, lab, "Tajawal-ExtraBold", min(rh * 0.3, 54), lw - 20); L.text((x2, cy), lab, font=f, fill=WHITE + (aj,), anchor="rm")
-        bx2 = x2 - lw; full = (bx2 - x1) * 0.7; bl = full * val / mx * e
-        L.rounded_rectangle((bx2 - full, cy - bh / 2, bx2, cy + bh / 2), bh / 2, fill=(255, 255, 255, int(aj * 0.07)))
-        if bl > 4: L.rounded_rectangle((bx2 - bl, cy - bh / 2, bx2, cy + bh / 2), bh / 2, fill=c + (aj,))
-        fv = font("Tajawal-Black", min(bh * 0.75, 60)); L.text((bx2 - bl - 18, cy + 2), disp, font=fv, fill=c + (aj,), anchor="rm")
+        f = fit(L, lab, "Tajawal-ExtraBold", min(rh * 0.3, 54), lw - 20)
+        fv = font("Tajawal-Black", min(bh * 0.75, 60))
+        if rtl():
+            L.text((x2, cy), lab, font=f, fill=WHITE + (aj,), anchor="rm")
+            bx2 = x2 - lw; full = (bx2 - x1) * 0.7; bl = full * val / mx * e
+            L.rounded_rectangle((bx2 - full, cy - bh / 2, bx2, cy + bh / 2), bh / 2, fill=(255, 255, 255, int(aj * 0.07)))
+            if bl > 4: L.rounded_rectangle((bx2 - bl, cy - bh / 2, bx2, cy + bh / 2), bh / 2, fill=c + (aj,))
+            L.text((bx2 - bl - 18, cy + 2), disp, font=fv, fill=c + (aj,), anchor="rm")
+        else:
+            L.text((x1, cy), lab, font=f, fill=WHITE + (aj,), anchor="lm")
+            bx1 = x1 + lw; full = (x2 - bx1) * 0.7; bl = full * val / mx * e
+            L.rounded_rectangle((bx1, cy - bh / 2, bx1 + full, cy + bh / 2), bh / 2, fill=(255, 255, 255, int(aj * 0.07)))
+            if bl > 4: L.rounded_rectangle((bx1, cy - bh / 2, bx1 + bl, cy + bh / 2), bh / 2, fill=c + (aj,))
+            L.text((bx1 + bl + 18, cy + 2), disp, font=fv, fill=c + (aj,), anchor="lm")
 
 
 # ---------------- calendario ----------------
+MONTH_IT = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre",
+            "novembre", "dicembre"]
 MONTH_AR = ["يناير", "فبراير", "مارس", "أبريل", "ماي", "يونيو", "يوليوز", "غشت", "شتنبر", "أكتوبر", "نونبر", "دجنبر"]
 
 
@@ -435,7 +473,7 @@ def draw_calendar(lay, box, spec, lt, a=1.0):
     T.rounded_rectangle((0, 0, s - 1, s - 1), s * 0.1, fill=(246, 246, 242, 255))
     T.rounded_rectangle((0, 0, s - 1, s * 0.3), s * 0.1, fill=RED + (255,)); T.rectangle((0, s * 0.18, s - 1, s * 0.3), fill=RED + (255,))
     for rx in (0.3, 0.7): T.rounded_rectangle((s * rx - s * 0.03, -s * 0.0, s * rx + s * 0.03, s * 0.08), s * 0.02, fill=(60, 60, 66, 255))
-    m = spec.get("month"); m = MONTH_AR[m - 1] if isinstance(m, int) else m
+    m = spec.get("month"); m = (MONTH_AR if rtl() else MONTH_IT)[m - 1] if isinstance(m, int) else m
     T.text((s / 2, s * 0.16), m, font=fit(T, m, "Tajawal-Black", s * 0.14, s * 0.85), fill=WHITE + (255,), anchor="mm")
     dd = str(spec["day"]); T.text((s / 2, s * 0.6), dd, font=fit(T, dd, "Tajawal-Black", s * 0.46, s * 0.85), fill=(25, 25, 30, 255), anchor="mm")
     if spec.get("sub"): T.text((s / 2, s * 0.88), spec["sub"], font=fit(T, spec["sub"], "Tajawal-Bold", s * 0.075, s * 0.85), fill=(90, 90, 98, 255), anchor="mm")
@@ -448,12 +486,12 @@ def draw_calendar(lay, box, spec, lt, a=1.0):
 # ---------------- confronto ----------------
 def draw_vs(lay, box, spec, lt, a=1.0):
     x1, y1, x2, y2 = box; L = ImageDraw.Draw(lay); al = int(255 * a); gap = 40; cw = (x2 - x1 - gap) / 2
-    sides = [spec["right"], spec["left"]]  # il primo a destra (RTL)
-    for j, sd in enumerate(sides):
+    sides = [(spec["right"], 0), (spec["left"], 1)] if rtl() else [(spec["left"], 1), (spec["right"], 0)]
+    for j, (sd, pos) in enumerate(sides):
         t0 = spec.get("t", 0.2) + spec.get("gap", 0.6) * j
         if lt < t0: continue
         e = ease((lt - t0) / 0.4); aj = int(al * e); c = col(sd.get("color", "gold" if j == 0 else "grey"))
-        bx2 = x2 - j * (cw + gap); bx1 = bx2 - cw; dy = 40 * (1 - e)
+        bx2 = x2 - pos * (cw + gap); bx1 = bx2 - cw; dy = 40 * (1 - e)
         L.rounded_rectangle((bx1, y1 + dy, bx2, y2 + dy), 40, fill=CARD + (int(aj * 0.92),), outline=c + (aj,), width=4)
         cx = (bx1 + bx2) / 2; hh = y2 - y1
         if sd.get("icon"): paste(lay, icon(sd["icon"], int(min(cw, hh) * 0.26), c, 1.8), cx, y1 + dy + hh * 0.2, aj / 255)
@@ -476,7 +514,7 @@ def draw_steps(lay, box, spec, lt, a=1.0):
     for j, s in enumerate(st):
         t0 = spec.get("t", 0.2) + spec.get("gap", 0.55) * j
         if lt < t0: continue
-        e = ease((lt - t0) / 0.35); aj = int(al * e); cy = y1 + rh * (j + 0.5); cx = x2 - r - 6; dx = 30 * (1 - e)
+        e = ease((lt - t0) / 0.35); aj = int(al * e); cy = y1 + rh * (j + 0.5); cx = (x2 - r - 6) if rtl() else (x1 + r + 6); dx = 30 * (1 - e)
         if j < n - 1 and lt > t0 + 0.3:
             L.line([(cx, cy + r), (cx, cy + rh - r)], fill=(80, 84, 96, aj), width=6)
         done = lt > t0 + spec.get("check_after", 0.45)
@@ -485,9 +523,11 @@ def draw_steps(lay, box, spec, lt, a=1.0):
         else: L.text((cx, cy + 3), str(j + 1), font=font("Tajawal-Black", r * 1.0), fill=WHITE + (aj,), anchor="mm")
         lab = s if isinstance(s, str) else s[0]
         f = fit(L, lab, "Tajawal-ExtraBold", min(rh * 0.36, 58), (x2 - x1) - r * 2 - 60)
-        L.text((cx - r - 34 - dx, cy + 2), lab, font=f, fill=WHITE + (aj,), anchor="rm")
+        if rtl(): L.text((cx - r - 34 - dx, cy + 2), lab, font=f, fill=WHITE + (aj,), anchor="rm")
+        else: L.text((cx + r + 34 + dx, cy + 2), lab, font=f, fill=WHITE + (aj,), anchor="lm")
         if not isinstance(s, str) and len(s) > 1:
-            L.text((x1, cy + 2), s[1], font=font("Tajawal-Black", min(rh * 0.38, 60)), fill=GOLD + (aj,), anchor="lm")
+            L.text((x1, cy + 2) if rtl() else (x2, cy + 2), s[1], font=font("Tajawal-Black", min(rh * 0.38, 60)), fill=GOLD + (aj,),
+                   anchor="lm" if rtl() else "rm")
 
 
 DRAW = {"map": draw_map, "people": draw_people, "icons": draw_icons, "bars": draw_bars, "calendar": draw_calendar,
