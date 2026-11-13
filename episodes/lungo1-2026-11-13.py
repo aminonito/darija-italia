@@ -70,8 +70,8 @@ BLOCKS = [
         left=dict(title="2027 · مشروع", value="1.200 €", sub="100 € × 12", icon="coin-euro", color="green"), gap=2.0),
    dict(k="big", text="+480 €", at="يعني ربع", until="وإلى خدمات", y=480, size=250, color=GREEN, sub="1.200 − 720 فالعام"),
    dict(k="big", text="700 €", at="وإلى خدمات", until="ولكن رد البال:", y=480, size=250, color=GOLD, sub="7 شهور × 100 €"),
-   dict(k="icons", at="ولكن رد البال:", until="وحاجة أخرى:", items=[["home", "الخدامات فالديور", "red"], ["baby-carriage", "ولد واحد", "red"]], gap=1.5),
-   dict(k="text", text="ما داخلينش", at="ولكن رد البال:", until="وحاجة أخرى:", y=900, size=56, color=RED),
+   dict(k="icons", at="ولكن رد البال:", until="وحاجة أخرى:", box=(160, 330, 1760, 860), items=[["home", "الخدامات فالديور", "red"], ["baby-carriage", "ولد واحد", "red"]], gap=1.5),
+   dict(k="head", text="ما داخلينش", at="ولكن رد البال:", until="وحاجة أخرى:", sub="البونوس ماشي ليهم"),
    dict(k="calendar", at="وحاجة أخرى:", until="وأهم حاجة:", box=R_BOX, day=31, month=12, sub="آخر الإعفاء ديال الكونتريبوتي"),
    dict(k="text", text="ماماوات · 3 ولاد · كونطرا دايم", at="وحاجة أخرى:", until="وأهم حاجة:", x=560, y=500, size=54, color=GOLD),
    dict(k="warn", text="باقي مشروع فالبرلمان: يقدر يتبدل", at="وأهم حاجة:", until="وديال هاد العام،", y=520),
@@ -88,7 +88,7 @@ BLOCKS = [
      ["الأقل", 58.3, "58,30 €", "grey"], ["الأكثر", 203.8, "203,80 €", "green"]], gap=1.5),
    dict(k="head", text="شكون يقدر يتعطل عليه؟", at="شكون اللي يقدر", until="ونصيحة: إلى", sub="آخر الأسبوع ديال نونبر"),
    dict(k="icons", at="اللي دار الطلب", until="ونصيحة: إلى", box=(160, 330, 1760, 840), items=[
-     ["file-text", "طلب جديد", "gold"], ["baby-carriage", "ولد جديد", "blue"], ["credit-card", "تبديل الإيبان", "red"], ["report-money", "تبديل الإيزي", "green"]], gap=1.0),
+     ["file-text", "طلب جديد", "gold"], ["baby-carriage", "ولد جديد", "blue"], ["credit-card", "تبديل الإيبان", "red"]], gap=1.0),
    dict(k="steps", at="ونصيحة: إلى", box=(160, 230, 1760, 820), steps=[
      ["دخل للسيت ديال الإينبس", "INPS"], ["دخل بالسبيد", "SPID"], ["شوف الحالة ديال الخلاص", "OK"]], gap=2.5, check_after=1.0),
  ]),
