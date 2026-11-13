@@ -1,0 +1,153 @@
+{
+ "title": "السفر بالريسيفوتا",
+ "brand": "مغاربة إيطاليا",
+ "voice": "Iapetus",
+ "src_default": "InfoImmigrazione; Money.it (circolare Min. Interno 9/8/2006)",
+ "scenes": [
+  {
+   "hook": "البيرميسو فالتجديد",
+   "big": "",
+   "sub": "",
+   "text": "البيرميسو ديالك فالتجديد، وعندك غير الريسيفوتا ديال البوسطا؟ واش تقدر تمشي للمغرب وترجع؟ إيه، ولكن بشروط.",
+   "v": {
+    "type": "people",
+    "people": [
+     "worker",
+     "woman"
+    ],
+    "say": [
+     {
+      "who": 0,
+      "text": "نقدر نمشي للمغرب؟",
+      "at": 0.5
+     },
+     {
+      "who": 1,
+      "text": "إيه، بشروط",
+      "at": 4.2,
+      "bg": "green"
+     }
+    ]
+   },
+   "src": "InfoImmigrazione; Money.it (circolare Min. Interno 9/8/2006)"
+  },
+  {
+   "hook": "تلت وراق",
+   "big": "",
+   "sub": "",
+   "text": "خاصك تهز معاك تلت حوايج: الباسبور، البيرميسو القديم، والريسيفوتا ديال التجديد.",
+   "v": {
+    "type": "icons",
+    "items": [
+     [
+      "e-passport",
+      "الباسبور"
+     ],
+     [
+      "id",
+      "البيرميسو القديم"
+     ],
+     [
+      "receipt",
+      "الريسيفوتا",
+      "gold"
+     ]
+    ],
+    "gap": 1.0
+   },
+   "src": "InfoImmigrazione; Money.it (circolare Min. Interno 9/8/2006)"
+  },
+  {
+   "hook": "فين تقدر تمشي؟",
+   "big": "",
+   "sub": "",
+   "text": "الريسيفوتا كتخليك تسافر غير لبلادك، يعني المغرب، وترجع نيشان لإيطاليا. ماشي لفرنسا ولا لإسبانيا.",
+   "v": {
+    "type": "vs",
+    "right": {
+     "title": "المغرب",
+     "value": "إيه",
+     "icon": "plane",
+     "sub": "بلادك",
+     "color": "green"
+    },
+    "left": {
+     "title": "فرنسا، إسبانيا",
+     "value": "لا",
+     "icon": "x",
+     "sub": "بلدان أخرى",
+     "color": "red"
+    },
+    "gap": 2.6
+   },
+   "src": "InfoImmigrazione; Money.it (circolare Min. Interno 9/8/2006)"
+  },
+  {
+   "hook": "الطيارة",
+   "big": "",
+   "sub": "طيارة مباشرة، بلا سطوب فأوروبا",
+   "text": "والطيارة ما خاصهاش تحبس فشي بلاد أخرى ديال الشينغن، حتى غير باش تبدل الطيارة. ميلانو، كازا، نيشان.",
+   "v": {
+    "type": "map",
+    "view": "med",
+    "route": [
+     "Milano",
+     "Casablanca"
+    ],
+    "pins": [],
+    "dur": 2.5
+   },
+   "src": "InfoImmigrazione; Money.it (circolare Min. Interno 9/8/2006)"
+  },
+  {
+   "hook": "علاش؟",
+   "big": "لا",
+   "sub": "الريسيفوتا ماشي معترف بيها فبلدان أوروبا الأخرى",
+   "text": "علاش؟ حيت الريسيفوتا ماشي معترف بيها فالبلدان الأخرى ديال أوروبا.",
+   "src": "InfoImmigrazione; Money.it"
+  },
+  {
+   "hook": "البيرميسو الأول",
+   "big": "",
+   "sub": "",
+   "text": "وإلى كان هادا أول بيرميسو، ماشي تجديد، سول الكيستورا قبل ما تسافر.",
+   "v": {
+    "type": "people",
+    "people": [
+     "hijab",
+     "clerk"
+    ],
+    "say": [
+     {
+      "who": 0,
+      "text": "أول بيرميسو؟",
+      "at": 0.4
+     },
+     {
+      "who": 1,
+      "text": "سول قبل ما تسافر",
+      "at": 2.4,
+      "bg": "green"
+     }
+    ]
+   },
+   "src": "InfoImmigrazione; Money.it"
+  },
+  {
+   "hook": "",
+   "big": "تابعنا",
+   "sub": "مغاربة إيطاليا · كل نهار خبر مفيد",
+   "text": "ونتا؟ كتب لينا فالكومونتير، وتابع مغاربة إيطاليا باش يوصلك كل جديد.",
+   "v": {
+    "type": "map",
+    "view": "med",
+    "route": [
+     "Roma",
+     "Casablanca"
+    ],
+    "pins": [],
+    "dur": 2.2
+   }
+  }
+ ]
+}
