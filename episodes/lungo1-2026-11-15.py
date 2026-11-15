@@ -61,13 +61,13 @@ BLOCKS = [
  ]),
  dict(audio="D.wav", text=T["D"], chapter="02 · ألف أورو للمولود الجديد", src=S_BNN, items=[
    dict(k="chapter", num="02", title="ألف أورو للمولود الجديد", at=0.1, until="عندك الحق"),
-   dict(k="people", at="عندك الحق", until="الشرط الأول", box=(160, 300, 1760, 860), people=["woman", "child", "man"],
+   dict(k="people", at="عندك الحق", until="مرة وحدة", box=(160, 300, 1760, 860), people=["woman", "child", "man"],
         say=[dict(who=0, text="تزاد لينا ولد", at=0.2), dict(who=2, text="ألف أورو", at=1.8, bg="green")]),
    dict(k="big", text="1.000 €", at="مرة وحدة", until="الشرط الأول", y=470, size=260, color=GREEN, sub="مرة وحدة · بلا ضريبة"),
    dict(k="head", text="الشروط", at="الشرط الأول", until="والأجانب داخلين", sub="المواليد ديال 2026"),
    dict(k="icons", at="الشرط الأول", until="والأجانب داخلين", box=(160, 330, 1760, 860), items=[
      ["calculator", "الإيزي حتى 40.000 €", "gold"], ["baby-carriage", "لاسينيو أونيكو ما كيتحسبش", "green"], ["home", "ساكن فإيطاليا بلا انقطاع", "blue"]], gap=3.0),
-   dict(k="map", view="italy", pins=["Milano", "Bologna", "Roma"], labels=False, at="والأجانب داخلين", box=R_BOX),
+   dict(k="map", view="italy", pins=["Milano", "Bologna", "Roma"], labels=False, at="والأجانب داخلين", until="ولكن قبل", box=R_BOX),
    dict(k="text", text="الأجانب داخلين", at="والأجانب داخلين", until="ولكن قبل", x=560, y=430, size=66, color=GOLD),
    dict(k="text", text="الكارطا ديال المدة الطويلة", at="والأجانب داخلين", until="ولكن قبل", x=560, y=530, size=46, color=WHITE),
    dict(k="text", text="بيرميسو ديال الخدمة", at="والأجانب داخلين", until="ولكن قبل", x=560, y=610, size=46, color=WHITE),
@@ -78,7 +78,7 @@ BLOCKS = [
    dict(k="big", text="120", at=0.1, until="مثال من عندنا", y=470, size=300, color=GOLD, sub="يوم من نهار الزيادة · من بعد يضيع الحق"),
    dict(k="calendar", at="مثال من عندنا", until="الطلب كيديرو", box=R_BOX, day=20, month=3, sub="آخر أجل · 2027"),
    dict(k="text", text="تزاد نهار 20/11/2026", at="مثال من عندنا", until="الطلب كيديرو", x=560, y=470, size=60, color=WHITE),
-   dict(k="text", text="+120 يوم", at="مثال من عندنا", until="الطلب كيديرو", x=560, y=570, size=56, color=GOLD),
+   dict(k="text", text="من بعد 120 يوم", at="مثال من عندنا", until="الطلب كيديرو", x=560, y=570, size=56, color=GOLD),
    dict(k="steps", at="الطلب كيديرو", until="خاصك إيزي", box=(160, 230, 1760, 820), steps=[
      ["السيت ديال الإينبس", "SPID / CIE"], ["التطبيق", "App"], ["الباطرونا", "Patronato"]], gap=1.8, check_after=0.8),
    dict(k="icons", at="خاصك إيزي", until="وإلى جاوك", box=(160, 300, 1760, 860), items=[
@@ -88,7 +88,7 @@ BLOCKS = [
  ]),
  dict(audio="F.wav", text=T["F"], chapter="03 · المغرب: الديوانة للمتقاعدين", src=S_DOU, items=[
    dict(k="chapter", num="03", title="المغرب: الديوانة للمتقاعدين", at=0.1, until="الديوانة المغربية"),
-   dict(k="map", view="med", hl=["MAR"], route=["Genova", "Tanger", "ship"], pins=["Casablanca"], labels=False, at="الديوانة المغربية", until="الشروط:", box=(160, 200, 1760, 880)),
+   dict(k="map", view="med", hl=["MAR"], route=["Genova", "Tanger", "ship"], pins=["Casablanca"], labels=False, at="الديوانة المغربية", until="تخفيض ديال", box=(160, 200, 1760, 880)),
    dict(k="big", text="-90%", at="تخفيض ديال", until="الشروط:", y=470, size=280, color=GREEN, sub="على الحقوق والرسوم ديال الطوموبيل"),
    dict(k="people", at="الشروط:", until="الطوموبيل خاص", box=R_BOX, people=["elder"],
         say=[dict(who=0, text="عندي 62 عام", at=0.4, bg="green")]),
@@ -97,7 +97,7 @@ BLOCKS = [
    dict(k="icons", at="الطوموبيل خاص", until="والحساب كيكون", box=(160, 330, 1760, 860), items=[
      ["car", "أقل من 10 سنين", "gold"], ["users", "9 بلايص ولا أقل", "green"]], gap=2.0),
    dict(k="bars", at="والحساب كيكون", box=(160, 380, 1760, 820), bars=[
-     ["القيمة ديال الطوموبيل جديدة", 300, "300.000 DH", "green"], ["اللي فوق", 120, "100%", "red"]], gap=3.0),
+     ["القيمة ديال الطوموبيل جديدة", 300, "300.000 DH", "green"], ["اللي فوق: الرسوم كاملين", 120, "100%", "red"]], gap=3.0),
    dict(k="head", text="الحد ديال القيمة", at="والحساب كيكون", sub="القيمة وهي جديدة"),
  ]),
  dict(audio="G.wav", text=T["G"], chapter="03 · المغرب: الديوانة للمتقاعدين", src=S_DOU, items=[
