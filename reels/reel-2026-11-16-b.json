@@ -2,7 +2,7 @@
  "title": "الكارطا ديال الكاغط حتى 31 يناير",
  "brand": "مغاربة إيطاليا",
  "voice": "Charon",
- "src_default": "Poste Italiane; FiscoeTasse (DL 108/2026); Comune di Como; Arletti Partners",
+ "src_default": "Poste Italiane; FiscoeTasse; Comune di Como; Arletti",
  "scenes": [
   {
    "hook": "الكارطا ديال الكاغط",
@@ -33,7 +33,7 @@
   {
    "hook": "شنو تجيب",
    "text": "دير الموعد فالكومون، وجيب الباسبور، البيرميسو ولا الريسيفوتا ديال البوسطا، الكوديتشي فيسكالي وتصويرة.",
-   "v": {"type": "icons", "items": [["e-passport", "الباسبور"], ["id", "البيرميسو ولا الريسيفوتا"], ["file-certificate", "الكوديتشي فيسكالي"], ["camera", "تصويرة"]], "gap": 1.3},
+   "v": {"type": "icons", "items": [["e-passport", "الباسبور"], ["id", "البيرميسو"], ["file-certificate", "الكوديتشي فيسكالي"], ["camera", "تصويرة"]], "gap": 1.3},
    "big": "", "sub": ""
   },
   {
