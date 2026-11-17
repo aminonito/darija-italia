@@ -2,7 +2,7 @@
  "title": "البيرمي المغربي من بعد عام: خطية 158 €",
  "brand": "مغاربة إيطاليا",
  "voice": "Kore",
- "src_default": "Codice della strada art. 135 e 126; circolazione-stradale.it; Infopatenti; MIT",
+ "src_default": "CdS art. 135; circolazione-stradale.it; Infopatenti; MIT",
  "scenes": [
   {
    "hook": "خطية من 158 €",
@@ -16,13 +16,13 @@
     "say": [
      {
       "who": 0,
-      "text": "مازال كنسوق بالبيرمي المغربي",
+      "text": "عندي البيرمي المغربي",
       "at": 0.3
      },
      {
       "who": 1,
-      "text": "الخطية: 158 €",
-      "at": 2.0,
+      "text": "خطية 158 €",
+      "at": 3.0,
       "bg": "red"
      }
     ]
