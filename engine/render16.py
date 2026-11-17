@@ -290,7 +290,8 @@ def frame(i, n):
 def render_block(i):
     os.makedirs("build", exist_ok=True); tmp = f"build/b{i}.tmp.mp4"
     p = subprocess.Popen(["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
-                          "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", tmp], stdin=subprocess.PIPE)
+                          "-c:v", "libx264", "-preset", "medium", "-tune", "stillimage", "-crf", os.environ.get("CRF", "30"),
+                          "-g", "300", "-pix_fmt", "yuv420p", tmp], stdin=subprocess.PIPE)
     for n in range(NFR[i]): p.stdin.write(frame(i, n).tobytes())
     p.stdin.close(); p.wait(); os.replace(tmp, f"build/b{i}.mp4"); return i
 
@@ -387,7 +388,17 @@ if __name__ == "__main__":
             for i in range(len(BLOCKS)): f.write(f"file 'b{i}.mp4'\n")
         subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", "build/list.txt", "-c", "copy", "build/v.mp4"], check=True)
         subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", "build/v.mp4", "-i", "build/mix.wav", "-map", "0:v", "-map", "1:a", "-c:v", "copy",
-                        "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", out], check=True)
+                        "-c:a", "aac", "-b:a", "128k", "-shortest", "-movflags", "+faststart", out], check=True)
+        # limite GitHub: 100 MB per file → se serve ricomprimi finché sta sotto 95 MB
+        crf = int(os.environ.get("CRF", "30"))
+        while os.path.getsize(out) > 95e6 and crf < 40:
+            crf += 3
+            print(f"file {os.path.getsize(out) / 1e6:.0f} MB > 95 MB: ricomprimo con crf {crf}", flush=True)
+            subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", out, "-c:v", "libx264", "-preset", "medium", "-tune", "stillimage",
+                            "-crf", str(crf), "-g", "300", "-pix_fmt", "yuv420p", "-c:a", "copy", "-movflags", "+faststart",
+                            "build/re.mp4"], check=True)
+            os.replace("build/re.mp4", out)
+        print(f"dimensione {os.path.getsize(out) / 1e6:.1f} MB")
         print("\n".join(chapters()))
     elif cmd == "thumb":
         thumb(sys.argv[3])
