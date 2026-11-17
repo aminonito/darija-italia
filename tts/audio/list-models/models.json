@@ -1,0 +1,70 @@
+[
+ {
+  "name": "models/gemini-2.5-flash-preview-tts",
+  "methods": [
+   "countTokens",
+   "generateContent"
+  ],
+  "out": 16384
+ },
+ {
+  "name": "models/gemini-2.5-pro-preview-tts",
+  "methods": [
+   "countTokens",
+   "generateContent",
+   "batchGenerateContent"
+  ],
+  "out": 16384
+ },
+ {
+  "name": "models/gemini-3.1-flash-tts-preview",
+  "methods": [
+   "generateContent",
+   "countTokens",
+   "batchGenerateContent"
+  ],
+  "out": 16384
+ },
+ {
+  "name": "models/gemini-3.8-flash-tts",
+  "methods": [
+   "generateContent",
+   "countTokens",
+   "batchGenerateContent"
+  ],
+  "out": 16384
+ },
+ {
+  "name": "models/gemini-3.8-flash-lite-tts",
+  "methods": [
+   "generateContent",
+   "countTokens",
+   "batchGenerateContent"
+  ],
+  "out": 16384
+ },
+ {
+  "name": "models/gemini-2.5-flash-native-audio-latest",
+  "methods": [
+   "countTokens",
+   "bidiGenerateContent"
+  ],
+  "out": 8192
+ },
+ {
+  "name": "models/gemini-2.5-flash-native-audio-preview-09-2025",
+  "methods": [
+   "countTokens",
+   "bidiGenerateContent"
+  ],
+  "out": 8192
+ },
+ {
+  "name": "models/gemini-2.5-flash-native-audio-preview-12-2025",
+  "methods": [
+   "countTokens",
+   "bidiGenerateContent"
+  ],
+  "out": 8192
+ }
+]
