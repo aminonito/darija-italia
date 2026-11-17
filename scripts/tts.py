@@ -34,6 +34,17 @@ def synth(model, voice, text):
     raise RuntimeError("nessun audio nella risposta: " + json.dumps(data)[:500])
 
 
+def list_models(out):
+    """job {"list_models": true}: scrive l'elenco dei modelli che generano audio (nessun costo di quota)."""
+    req = urllib.request.Request("https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000",
+                                 headers={"x-goog-api-key": KEY})
+    with urllib.request.urlopen(req, timeout=60) as r:
+        data = json.load(r)
+    ms = [{"name": m["name"], "methods": m.get("supportedGenerationMethods", []), "out": m.get("outputTokenLimit")}
+          for m in data.get("models", []) if "tts" in m["name"] or "audio" in m["name"]]
+    json.dump(ms, open(f"{out}/models.json", "w"), indent=1)
+
+
 def main():
     status_all = {}; stop = set()
     for job_path in sorted(glob.glob("tts/jobs/*.json")):
@@ -41,6 +52,11 @@ def main():
         out = f"tts/audio/{name}"
         os.makedirs(out, exist_ok=True)
         job = json.load(open(job_path, encoding="utf-8"))
+        if job.get("list_models"):
+            if KEY and not os.path.exists(f"{out}/models.json"):
+                try: list_models(out)
+                except Exception as e: open(f"{out}/models.json", "w").write(json.dumps({"error": str(e)[:500]}))
+            continue
         model = job.get("model", "gemini-3.8-flash-lite-tts")
         voice = job.get("voice", "Charon")
         style = job.get("style", "").strip()
