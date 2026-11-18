@@ -1,0 +1,306 @@
+import json, os
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+JOB = json.load(open(os.path.join(ROOT, "tts/jobs/lungo1-2026-11-18.json"), encoding="utf-8"))
+AUDIO_DIR = os.path.join(ROOT, "tts/audio/lungo1-2026-11-18-final")
+BRAND = "مغاربة إيطاليا"
+GREY = (175, 175, 182); GOLD = (236, 196, 96); RED = (230, 90, 90); WHITE = (245, 245, 242); GREEN = (0, 190, 95)
+JOB["blocks"]["H"] = JOB["blocks"]["H"] + "\n\n" + json.load(open(os.path.join(ROOT, "tts/jobs/lungo1-2026-11-18-r2.json"), encoding="utf-8"))["blocks"]["H2"]
+T = {k: v.replace("گ", "ك") for k, v in JOB["blocks"].items()}
+
+S_HOME = "مغاربة إيطاليا · خبار مفيدة بالدارجة"
+S_PAC = "AGI 1/11/2026 · Affaritaliani · BusinessOnline 17/9/2026"
+S_PDS = "D.Lgs. 83/2026 · EC News 26/6/2026 · Patronato ACLI 15/7/2026"
+S_LUC = "ARERA del. 58/2026/R/eel · Energia Oltre · BlogSicilia 16/11/2026"
+S_BF = "Codice del consumo art. 17-bis · Quotidiano di Ragusa 13/11 · Trend Online 13/11"
+S_DIC = "Trend Online · Finanza.com 17/11 · QuiFinanza · Money.it · Comuni (IMU)"
+S_MAR = "Le Matin 19/10/2026 · Bladi.net 22/10/2026 · Hespress"
+S_QA = "Fonti dei capitoli 01-05 · Min. Lavoro (flussi) · MIMIT · Altroconsumo"
+L_BOX = (160, 250, 950, 780); R_BOX = (1000, 170, 1760, 850); FULL = (160, 300, 1760, 860)
+
+BLOCKS = [
+ dict(audio="A.wav", text=T["A"], chapter="00 · أخبار السيمانة", src=S_HOME, items=[
+   dict(k="head", text="أخبار السيمانة", at=0.2, until="شنو كاين اليوم؟", sub="الأربعاء 18 نونبر 2026"),
+   dict(k="people", at=0.6, until="شنو كاين اليوم؟", box=FULL, people=["woman", "man", "worker"],
+        say=[dict(who=0, text="شنو الجديد هاد السيمانة؟", at=0.8), dict(who=2, text="خبار مفيدة بالأرقام", at=3.0, bg="green")]),
+   dict(k="rows", at="شنو كاين اليوم؟", until="ومن بعد، خبر من المغرب", y=270, gap=112, size=48, rows=[
+     ("الكولي من برا أوروبا", "5 €", "الخبر الأول على"),
+     ("تجديد البيرميسو", "90", "الخبر التاني على"),
+     ("تبديل شركة الضو", "1/12", "الخبر التالت على"),
+     ("البلاك فرايدي", "27/11", "الخبر الرابع على"),
+     ("فلوس دجنبر", "1/12 - 16/12", "الخبر الخامس على"),
+   ]),
+   dict(k="map", view="med", hl=["ITA", "MAR"], route=["Milano", "Casablanca"], pins=["Roma", "Rabat"], labels=False,
+        at="ومن بعد، خبر من المغرب", until="وفالآخر، سؤال", box=(160, 200, 1760, 880)),
+   dict(k="people", at="وفالآخر، سؤال", until="وجوج ديال الأخبار اليوم", box=FULL, people=["hijab", "elder", "girl"],
+        say=[dict(who=0, text="عندي سؤال!", at=0.4), dict(who=1, text="حتى أنا", at=2.0, bg="green")]),
+   dict(k="people", at="وجوج ديال الأخبار اليوم", until="قبل ما نبداو، جوج", box=R_BOX, people=["clerk"],
+        say=[dict(who=0, text="القوانين كتبدل", at=0.5, bg="gold")]),
+   dict(k="icons", at="وجوج ديال الأخبار اليوم", until="قبل ما نبداو، جوج", box=L_BOX, items=[
+     ["mailbox", "الكولي", "gold"], ["id", "البيرميسو", "green"]], gap=1.5),
+   dict(k="icons", at="قبل ما نبداو، جوج", until="وإلى كان عندك شي سؤال على", box=(160, 330, 1760, 860), items=[
+     ["file-certificate", "جوج مصادر على الأقل", "green"], ["alert-triangle", "ماشي استشارة قانونية", "gold"], ["users", "سول الباطرونا", "blue"]], gap=2.5),
+   dict(k="map", view="italy", pins=["Milano", "Torino", "Bologna", "Roma", "Napoli"], labels=False, at="وإلى كان عندك شي سؤال على", box=L_BOX),
+   dict(k="people", at="وإلى كان عندك شي سؤال على", box=R_BOX, people=["man"],
+        say=[dict(who=0, text="كتب فالكومونتير", at=0.6, bg="green")]),
+ ]),
+ dict(audio="B.wav", text=T["B"], chapter="01 · الكولي من برا أوروبا", src=S_PAC, items=[
+   dict(k="chapter", num="01", title="الكولي من برا أوروبا", at=0.1, until="من الفاتح نونبر ألفين"),
+   dict(k="calendar", at="من الفاتح نونبر ألفين", until="يعني إلى شريتي عشرين", box=R_BOX, day=1, month=11, sub="الاتحاد الأوروبي · 2 € جداد"),
+   dict(k="map", view="italy", pins=["Roma", "Milano"], labels=False, at="من الفاتح نونبر ألفين", until="يعني إلى شريتي عشرين", box=L_BOX),
+   dict(k="vs", at="يعني إلى شريتي عشرين", until="وهاد المبلغ كيتزاد", box=(260, 220, 1660, 820),
+        right=dict(title="نوع واحد", value="2 €", sub="عشرين طاكية", icon="shopping-cart", color="grey"),
+        left=dict(title="تلاتة أنواع", value="6 €", sub="طاكية · تيشورت · سمطة", icon="shopping-cart", color="red"), gap=3.0),
+   dict(k="bars", at="وهاد المبلغ كيتزاد", until="خلينا نحسبو مثال", box=(160, 330, 1760, 840), bars=[
+     ["من يوليوز", 3, "3 €", "grey"], ["من 1 نونبر", 5, "5 €", "red"]], gap=2.5),
+   dict(k="head", text="على كل نوع ديال السلعة", at="وهاد المبلغ كيتزاد", until="خلينا نحسبو مثال", sub="الكولي تحت 150 €"),
+   dict(k="map", view="north", pins=["Brescia", "Milano"], labels=False, at="خلينا نحسبو مثال", until="جوج أنواع ضرب", box=L_BOX),
+   dict(k="people", at="خلينا نحسبو مثال", until="جوج أنواع ضرب", box=R_BOX, people=["hijab"],
+        say=[dict(who=0, text="شحال غادي يتزاد؟", at=0.8)]),
+   dict(k="steps", at="جوج أنواع ضرب", until="وإلى كان الكولي فوق", box=(260, 220, 1660, 840), steps=[
+     ["التيشورتات", "5 €"], ["الصبابط", "5 €"], ["المجموع الزايد", "10 €"]], gap=1.4, check_after=0.6),
+   dict(k="big", text="شحال ديال الأنواع؟", at="إذن السؤال المهم", until="وشنو مع الضريبة الإيطالية", y=470, size=150, color=GOLD, sub="ماشي شحال ديال الحوايج"),
+   dict(k="vs", at="وإلى كان الكولي فوق", until="إذن السؤال المهم", box=(260, 220, 1660, 820),
+        right=dict(title="تحت 150 €", value="5 €", sub="على كل نوع", icon="mailbox", color="gold"),
+        left=dict(title="فوق 150 €", value="2 €", sub="والديوانة العادية", icon="truck", color="blue"), gap=2.5),
+   dict(k="people", at="وشنو مع الضريبة الإيطالية", until="شكون كيهمو هاد", box=R_BOX, people=["office"],
+        say=[dict(who=0, text="باقي ماشي قانون", at=6.0, bg="red")]),
+   dict(k="map", view="italy", pins=["Roma"], labels=False, at="وشنو مع الضريبة الإيطالية", until="شكون كيهمو هاد", box=L_BOX),
+   dict(k="people", at="شكون كيهمو هاد", until="نصيحة عملية: قبل", box=FULL, people=["girl", "worker"],
+        say=[dict(who=0, text="كنشري بزاف أونلاين", at=0.6), dict(who=1, text="أنا من الحانوت", at=4.0, bg="green")]),
+   dict(k="icons", at="نصيحة عملية: قبل", box=(160, 330, 1760, 860), items=[
+     ["receipt", "شوف المجموع", "gold"], ["shopping-cart", "طلبية وحدة", "green"], ["scale", "قارن مع إيطاليا", "blue"]], gap=2.5),
+ ]),
+ dict(audio="C.wav", text=T["C"], chapter="02 · تجديد البيرميسو", src=S_PDS, items=[
+   dict(k="chapter", num="02", title="تجديد البيرميسو: 90 يوم", at=0.1, until="فشهر ماي ألفين"),
+   dict(k="map", view="italy", pins=["Roma"], labels=False, at="فشهر ماي ألفين", until="الحاجة الأولى", box=L_BOX),
+   dict(k="people", at="فشهر ماي ألفين", until="الحاجة الأولى", box=R_BOX, people=["office"],
+        say=[dict(who=0, text="مرسوم جديد", at=0.6, bg="gold")]),
+   dict(k="vs", at="الحاجة الأولى", until="خلينا نحسبو مثال", box=(260, 220, 1660, 820),
+        right=dict(title="القاعدة القديمة", value="60", sub="يوم قبل ما يسالي", icon="id", color="grey"),
+        left=dict(title="القاعدة دابا", value="90", sub="يوم قبل ما يسالي", icon="id", color="green"), gap=4.0),
+   dict(k="map", view="north", pins=["Milano"], labels=False, at="خلينا نحسبو مثال", until="تسعين يوم قبل هاد", box=L_BOX),
+   dict(k="people", at="خلينا نحسبو مثال", until="تسعين يوم قبل هاد", box=R_BOX, people=["worker"],
+        say=[dict(who=0, text="فوقاش نصيفط؟", at=1.5)]),
+   dict(k="steps", at="تسعين يوم قبل هاد", until="وخود مثال تاني", box=(260, 220, 1660, 840), steps=[
+     ["البيرميسو كيسالي", "20/03/2027"], ["آخر أجل للطلب", "20/12/2026"]], gap=1.8, check_after=0.6),
+   dict(k="calendar", at="ولاحظ: عشرين", until="الحاجة التانية", day=20, month=12, sub="قريب من عطلة راس العام", box=(460, 200, 1460, 860)),
+   dict(k="people", at="وخود مثال تاني", until="ولاحظ: عشرين", box=R_BOX, people=["hijab"],
+        say=[dict(who=0, text="فات التاريخ!", at=5.0, bg="red")]),
+   dict(k="steps", at="وخود مثال تاني", until="ولاحظ: عشرين", box=L_BOX, steps=[
+     ["كيسالي", "10/02/2027"], ["الأجل", "12/11/2026"]], gap=1.8, check_after=0.6),
+   dict(k="big", text="30", at="الحاجة التانية", until="ولكن رد البال: التلاتين", y=430, size=280, color=GREEN, sub="يوم · البيرميسو الموحد ديال الخدمة"),
+   dict(k="warn", text="التلاتين يوم كيبداو ملي يكون الملف كامل", at="ولكن رد البال: التلاتين", until="إذن الدرس هنا"),
+   dict(k="people", at="ولكن رد البال: التلاتين", until="إذن الدرس هنا", box=(160, 220, 1760, 700), people=["clerk", "man"],
+        say=[dict(who=0, text="خاصك ورقة ناقصة", at=3.5, bg="red")]),
+   dict(k="icons", at="شنو كتحتاج عادة؟", until="والطريقة ما تبدلاتش", box=(160, 330, 1760, 860), items=[
+     ["e-passport", "الباسبور", "blue"], ["id", "البيرميسو", "green"], ["camera", "4 تصاور", "gold"], ["briefcase", "وراق الخدمة", "red"]], gap=1.6),
+   dict(k="steps", at="والطريقة ما تبدلاتش", until="شكون كيهمو هاد", box=(260, 220, 1660, 840), steps=[
+     ["الكيت ديال البوسطا", "1"], ["الريسيفوتا", "2"], ["البصمات فالكيستورا", "3"]], gap=2.5, check_after=0.6),
+   dict(k="people", at="شكون كيهمو هاد", until="نصيحة عملية: شد", box=FULL, people=["elder", "woman"],
+        say=[dict(who=0, text="عندي الكارطا", at=4.5), dict(who=1, text="عندي ديال الخدمة", at=1.0, bg="green")]),
+   dict(k="map", view="italy", pins=["Milano", "Roma", "Napoli"], labels=False, at="نصيحة عملية: شد", box=L_BOX),
+   dict(k="calendar", at="نصيحة عملية: شد", box=R_BOX, day=20, month=12, sub="كتب التاريخ فالأجندة"),
+ ]),
+ dict(audio="D.wav", text=T["D"], chapter="03 · الضو: تبديل الشركة", src=S_LUC, items=[
+   dict(k="chapter", num="03", title="الضو: التبديل فنهار", at=0.1, until="من الفاتح دجنبر ألفين"),
+   dict(k="calendar", at="من الفاتح دجنبر ألفين", until="شنو كان قبل؟", box=R_BOX, day=1, month=12, sub="أريرا · الضو ديال الدار"),
+   dict(k="map", view="italy", pins=["Roma", "Milano", "Napoli"], labels=False, at="من الفاتح دجنبر ألفين", until="شنو كان قبل؟", box=L_BOX),
+   dict(k="vs", at="شنو كان قبل؟", until="ولكن رد البال، كاين", box=(260, 220, 1660, 820),
+        right=dict(title="قبل", value="10", sub="آخر نهار فالشهر", icon="calendar", color="grey"),
+        left=dict(title="من 1 دجنبر", value="1", sub="نهار خدمة تقني", icon="bolt", color="green"), gap=4.0),
+   dict(k="head", text="المدة كاملة: حتى لتلت سيمانات", at="ولكن رد البال، كاين", until="شكون يقدر يستافد", sub="نهار واحد = غير المرحلة التقنية"),
+   dict(k="people", at="ولكن رد البال، كاين", until="شكون يقدر يستافد", box=(160, 380, 1760, 870), people=["clerk", "man"],
+        say=[dict(who=1, text="غير نهار؟", at=0.8), dict(who=0, text="ماشي للجميع", at=4.0, bg="red")]),
+   dict(k="icons", at="شكون يقدر يستافد", until="شنو خاصك باش تبدل", box=(160, 330, 1760, 860), items=[
+     ["home", "الضو ديال الدار", "green"], ["flame", "الغاز ما داخلش", "red"], ["building-store", "المحلات ما داخلينش", "red"]], gap=2.0),
+   dict(k="people", at="شنو خاصك باش تبدل", until="وهل التبديل", box=FULL, people=["man", "clerk"],
+        say=[dict(who=0, text="فين نلقى البود؟", at=0.5), dict(who=1, text="فالفاتورة", at=2.5, bg="green")]),
+   dict(k="icons", at="وهل التبديل فابور", until="وإلى وقعتي من التيليفون", box=(160, 330, 1760, 860), items=[
+     ["coin-euro", "التبديل فابور", "green"], ["alert-triangle", "غرامة الثمن الثابت", "red"], ["flame", "تخفيض الغاز", "gold"]], gap=3.0),
+   dict(k="big", text="14", at="وإلى وقعتي من التيليفون", until="مثال من عندنا: كريم", y=430, size=280, color=GOLD, sub="يوم باش ترجع فالكلمة ديالك"),
+   dict(k="map", view="north", pins=["Torino"], labels=False, at="مثال من عندنا: كريم", until="وخلينا نرتبو الخطوات", box=L_BOX),
+   dict(k="people", at="مثال من عندنا: كريم", until="وخلينا نرتبو الخطوات", box=R_BOX, people=["worker"],
+        say=[dict(who=0, text="لقيت عرض أرخص", at=2.0, bg="green")]),
+   dict(k="steps", at="وخلينا نرتبو الخطوات", until="نصيحة عملية: قبل", box=(260, 190, 1660, 860), steps=[
+     ["الكود والاستهلاك", "1"], ["قارن العروض", "2"], ["الغرامة القديمة", "3"], ["وقع وخلي نسخة", "4"], ["تبع الفاتورة الأولى", "5"]], gap=2.5, check_after=0.6),
+   dict(k="people", at="نصيحة عملية: قبل", box=FULL, people=["elder", "clerk"],
+        say=[dict(who=1, text="قارن العروض", at=1.0, bg="green"), dict(who=0, text="البود ما نعطيهش فالتيليفون", at=7.0, bg="red")]),
+ ]),
+ dict(audio="E.wav", text=T["E"], chapter="04 · البلاك فرايدي", src=S_BF, items=[
+   dict(k="chapter", num="04", title="البلاك فرايدي: تخفيض بصح؟", at=0.1, until="وبزاف ديال الحوانت"),
+   dict(k="calendar", at="وبزاف ديال الحوانت", until="ولكن واش كل", box=R_BOX, day=27, month=11, sub="الجمعة · البلاك فرايدي"),
+   dict(k="map", view="italy", pins=["Milano", "Roma", "Palermo"], labels=False, at="وبزاف ديال الحوانت", until="ولكن واش كل", box=L_BOX),
+   dict(k="people", at="ولكن واش كل", until="كاينة قاعدة فالقانون", box=FULL, people=["girl", "man"],
+        say=[dict(who=0, text="واش التخفيض بصح؟", at=0.3)]),
+   dict(k="big", text="30", at="كاينة قاعدة فالقانون", until="علاش هاد القاعدة", y=430, size=280, color=GREEN, sub="يوم · أرخص ثمن قبل التخفيض"),
+   dict(k="people", at="علاش هاد القاعدة", until="خلينا نشوفو مثال", box=FULL, people=["office", "woman"],
+        say=[dict(who=0, text="كيطلعو الثمن قبل", at=0.8, bg="red")]),
+   dict(k="bars", at="خلينا نشوفو مثال", until="فالحقيقة، الثمن ما نقصش", box=(160, 330, 1760, 840), bars=[
+     ["أول نونبر", 79, "79 €", "green"], ["قبل التخفيض", 99, "99 €", "red"], ["البلاك فرايدي", 79.2, "79,20 €", "gold"]], gap=3.5),
+   dict(k="head", text="مثال من عندنا: الكاسك", at="خلينا نشوفو مثال", until="فالحقيقة، الثمن ما نقصش", sub="الإعلان: ناقص عشرين فالمية"),
+   dict(k="vs", at="فالحقيقة، الثمن ما نقصش", until="ودابا مثال ديال تخفيض حقيقي", box=(260, 220, 1660, 820),
+        right=dict(title="المكتوب", value="99 €", sub="الثمن القديم الغالط", icon="x", color="red"),
+        left=dict(title="الصحيح", value="79 €", sub="أرخص ثمن فالتلاتين يوم", icon="check", color="green"), gap=3.0),
+   dict(k="bars", at="ودابا مثال ديال تخفيض حقيقي", until="كيفاش تحمي راسك", box=(160, 330, 1760, 840), bars=[
+     ["طول الشهر", 79, "79 €", "grey"], ["البلاك فرايدي", 60, "60 €", "green"]], gap=2.5),
+   dict(k="head", text="تخفيض حقيقي", at="ودابا مثال ديال تخفيض حقيقي", until="كيفاش تحمي راسك", sub="19 € أقل"),
+   dict(k="steps", at="كيفاش تحمي راسك", until="رابعا، شوف السيت", box=(260, 220, 1660, 840), steps=[
+     ["الليستة والميزانية", "1"], ["الثمن الحقيقي", "2"], ["بلا ضغط الإعلانات", "3"]], gap=4.0, check_after=0.6),
+   dict(k="icons", at="رابعا، شوف السيت", until="وسؤال صغير سولو", box=(160, 330, 1760, 860), items=[
+     ["world", "العنوان ديال السيت", "blue"], ["building-store", "الشركة والرقم الضريبي", "gold"], ["file-text", "الشروط", "green"], ["credit-card", "خلاص كيخلي أثر", "red"]], gap=3.5),
+   dict(k="people", at="وسؤال صغير سولو", until="وتذكر: إلى شريتي", box=FULL, people=["woman", "hijab"],
+        say=[dict(who=0, text="واش محتاجها؟", at=1.5, bg="gold")]),
+   dict(k="big", text="14", at="وتذكر: إلى شريتي", until="وإلى شفتي تخفيض كذاب", y=430, size=280, color=GOLD, sub="يوم للرجوع فالشرا أونلاين"),
+   dict(k="map", view="italy", pins=["Roma"], labels=False, at="وإلى شفتي تخفيض كذاب", box=L_BOX),
+   dict(k="people", at="وإلى شفتي تخفيض كذاب", box=R_BOX, people=["clerk"],
+        say=[dict(who=0, text="بلغ على التخفيض الكذاب", at=1.0, bg="green")]),
+ ]),
+ dict(audio="F.wav", text=T["F"], chapter="05 · فلوس دجنبر", src=S_DIC, items=[
+   dict(k="chapter", num="05", title="فلوس دجنبر: التواريخ", at=0.1, until="نبداو بالمتقاعدين"),
+   dict(k="calendar", at="نبداو بالمتقاعدين", until="ومع الطريديشيما، المتقاعدين", box=R_BOX, day=1, month=12, sub="البانسيون والطريديشيما"),
+   dict(k="people", at="نبداو بالمتقاعدين", until="ومع الطريديشيما، المتقاعدين", box=L_BOX, people=["elder"],
+        say=[dict(who=0, text="البانسيون جات", at=1.0, bg="green")]),
+   dict(k="big", text="154,94 €", at="ومع الطريديشيما، المتقاعدين", until="هادي ماشي للجميع", y=450, size=240, color=GOLD, sub="الحد الأقصى · البانسيونات الضعيفة"),
+   dict(k="people", at="هادي ماشي للجميع", until="دابا الخدامة", box=FULL, people=["elder", "clerk"],
+        say=[dict(who=0, text="واش عندي الحق؟", at=0.6), dict(who=1, text="شوف الورقة ديال البانسيون", at=7.0, bg="green")]),
+   dict(k="vs", at="دابا الخدامة", until="وكيفاش كتحسب", box=(260, 220, 1660, 820),
+        right=dict(title="الدولة", value="15/12", sub="مع الخلصة", icon="building-bank", color="blue"),
+        left=dict(title="القطاع الخاص", value="CCNL", sub="حسب الكونطرا الجماعية", icon="briefcase", color="gold"), gap=3.0),
+   dict(k="head", text="كيفاش كتحسب الطريديشيما؟", at="وكيفاش كتحسب", until="مثال من عندنا: سعيد", sub="الخلصة × الشهور ÷ 12"),
+   dict(k="people", at="وكيفاش كتحسب", until="مثال من عندنا: سعيد", box=(160, 380, 1760, 870), people=["worker", "office"],
+        say=[dict(who=0, text="شحال غادي ناخد؟", at=0.5)]),
+   dict(k="steps", at="مثال من عندنا: سعيد", until="وشي غيابات", box=(260, 220, 1660, 840), steps=[
+     ["الخلصة الخام فالشهر", "1.600 €"], ["الشهور من أبريل", "9"], ["الطريديشيما الخام", "1.200 €"]], gap=3.0, check_after=0.6),
+   dict(k="icons", at="وشي غيابات", until="وإلى دوز التاريخ", box=(160, 330, 1760, 860), items=[
+     ["baby-carriage", "الولادة: كتحسب", "green"], ["building-hospital", "حادثة الخدمة: كتحسب", "green"], ["x", "الإضراب: لا", "red"]], gap=2.0),
+   dict(k="people", at="وإلى دوز التاريخ", until="دابا الأسينيو", box=FULL, people=["worker", "office"],
+        say=[dict(who=0, text="الطريديشيما حق", at=4.0, bg="green")]),
+   dict(k="calendar", at="دابا الأسينيو", until="والكارطا ديال المساعدة", box=R_BOX, day=16, month=12, sub="الأسينيو أونيكو · 16 و17"),
+   dict(k="map", view="italy", pins=["Torino", "Bologna", "Bari"], labels=False, at="دابا الأسينيو", until="والكارطا ديال المساعدة", box=L_BOX),
+   dict(k="icons", at="والكارطا ديال المساعدة", until="ومن جهة الخلاص", box=(160, 330, 1760, 860), items=[
+     ["credit-card", "500 €", "green"], ["shopping-cart", "غير الماكلة", "gold"], ["calendar", "حتى 10/10/2027", "blue"]], gap=2.5),
+   dict(k="icons", at="ومن جهة الخلاص", until="وللي عندهم مقاولة", box=(160, 330, 1760, 860), items=[
+     ["home-dollar", "الدار التانية: كتخلص", "red"], ["home", "دار السكنى: معفية", "green"]], gap=2.5),
+   dict(k="head", text="الإيمو: قبل 16 دجنبر", at="ومن جهة الخلاص", until="وللي عندهم مقاولة", sub="الباقي ديال 2026"),
+   dict(k="map", view="med", hl=["ITA", "MAR"], route=["Casablanca", "Milano", "plane"], labels=False, at="وللي عندهم مقاولة", until="إذن، دجنبر فيه", box=L_BOX),
+   dict(k="calendar", at="وللي عندهم مقاولة", until="إذن، دجنبر فيه", box=R_BOX, day=7, month=12, sub="الديكري فلوسي · 20:00"),
+   dict(k="rows", at="إذن، دجنبر فيه", until="نصيحة عملية: كتب", y=300, gap=120, size=50, rows=[
+     ("البانسيون والطريديشيما", "1/12"), ("الطريديشيما ديال الدولة", "15/12"),
+     ("الإيمو والكارطا", "16/12"), ("الأسينيو أونيكو", "16-17/12")]),
+   dict(k="people", at="نصيحة عملية: كتب", box=FULL, people=["woman", "man"],
+        say=[dict(who=0, text="خلي فلوس يناير", at=3.0, bg="gold")]),
+ ]),
+ dict(audio="G.wav", text=T["G"], chapter="06 · من المغرب: السكن فالعروبية", src=S_MAR, items=[
+   dict(k="chapter", num="06", title="من المغرب: السكن فالعروبية", at=0.1, until="الحكومة المغربية أعلنات"),
+   dict(k="map", view="med", hl=["MAR"], pins=["Rabat"], labels=False, at="الحكومة المغربية أعلنات", until="الفكرة: مساعدة", box=L_BOX),
+   dict(k="calendar", at="الحكومة المغربية أعلنات", until="الفكرة: مساعدة", box=R_BOX, day=19, month=10, sub="الإعلان فالبرلمان"),
+   dict(k="big", text="40.000 DH", at="الفكرة: مساعدة", until="والهدف ديال البرنامج", y=450, size=240, color=GOLD, sub="لكل أسرة · بناء ولا إصلاح فالدوار"),
+   dict(k="big", text="100.000", at="والهدف ديال البرنامج", until="يعني البرنامج مخطط", y=450, size=240, color=GREEN, sub="دار فالعالم القروي فخمس سنين"),
+   dict(k="people", at="يعني البرنامج مخطط", until="ولكن رد البال، هادشي", box=FULL, people=["clerk", "man"],
+        say=[dict(who=0, text="ما كاينش علاش تزرب", at=2.0, bg="green")]),
+   dict(k="people", at="ولكن رد البال، هادشي", until="البرنامج باقي كيتوجد", box=FULL, people=["office"],
+        say=[dict(who=0, text="باقي غير إعلان", at=0.4, bg="red")]),
+   dict(k="icons", at="البرنامج باقي كيتوجد", until="إذن، شنو الدرس", box=(160, 330, 1760, 860), items=[
+     ["calendar", "تاريخ الخلاص: ما كاينش", "red"], ["file-text", "طريقة الطلب: ما كايناش", "red"], ["users", "مغاربة العالم: ما توضحش", "gold"]], gap=3.0),
+   dict(k="people", at="إذن، شنو الدرس", until="وشنو الفرق بين", box=FULL, people=["worker", "elder"],
+        say=[dict(who=0, text="عطيني الوراق نسجلك", at=2.5, bg="red"), dict(who=1, text="لا، ما كاينش تسجيل رسمي", at=6.5, bg="green")]),
+   dict(k="vs", at="وشنو الفرق بين", until="علاش هاد الخبر كيهمك", box=(260, 220, 1660, 820),
+        right=dict(title="البرنامج القديم", value="100.000 DH", sub="ولا 70.000 · باش تشري دار", icon="home-dollar", color="blue"),
+        left=dict(title="البرنامج الجديد", value="40.000 DH", sub="بناء ولا إصلاح فالعروبية", icon="home", color="green"), gap=6.0),
+   dict(k="map", view="med", hl=["ITA", "MAR"], route=["Milano", "Casablanca"], pins=["Nador"], labels=False, at="علاش هاد الخبر كيهمك", until="نصيحة عملية: إلى", box=(160, 200, 1760, 880)),
+   dict(k="steps", at="نصيحة عملية: إلى", until="وبالنسبة للبلاد", box=(260, 220, 1660, 840), steps=[
+     ["وراق الملكية ولا الإرث", "1"], ["الجماعة ديال الدوار", "2"], ["تسنى الإعلان الرسمي", "3"]], gap=3.0, check_after=0.6),
+   dict(k="people", at="وبالنسبة للبلاد", box=FULL, people=["hijab", "clerk"],
+        say=[dict(who=0, text="اقرا الشروط", at=1.0), dict(who=1, text="سول القنصلية", at=6.0, bg="green")]),
+ ]),
+ dict(audio="H.wav", text=T["H"], chapter="07 · سؤال وجواب", src=S_QA, items=[
+   dict(k="head", text="سؤال وجواب", at=0.1, until="السؤال الأول", sub="الأسئلة على أخبار السيمانة"),
+   dict(k="people", at=0.3, until="السؤال الأول", box=FULL, people=["girl", "man", "elder"],
+        say=[dict(who=1, text="عندي سؤال", at=0.8)]),
+   dict(k="people", at="السؤال الأول", until="الجواب: عندك تلاتة", box=FULL, people=["girl"],
+        say=[dict(who=0, text="كاسكيطة وصاك وصباط: شحال زايد؟", at=0.5)]),
+   dict(k="big", text="15 €", at="الجواب: عندك تلاتة", until="السؤال التاني", y=430, size=260, color=GOLD, sub="تلاتة أنواع · 3 × 5 €"),
+   dict(k="people", at="السؤال التاني", until="الجواب: القاعدة دابا", box=FULL, people=["man"],
+        say=[dict(who=0, text="البيرميسو كيسالي فمارس", at=0.5)]),
+   dict(k="calendar", at="الجواب: القاعدة دابا", until="السؤال التالت", box=R_BOX, day=15, month=12, sub="آخر أجل · كيسالي 15/03/2027"),
+   dict(k="map", view="italy", pins=["Roma", "Milano"], labels=False, at="الجواب: القاعدة دابا", until="السؤال التالت", box=L_BOX),
+   dict(k="people", at="السؤال التالت", until="الجواب: لا. الطريقة", box=FULL, people=["woman"],
+        say=[dict(who=0, text="الضو والغاز فنهار؟", at=0.5)]),
+   dict(k="vs", at="الجواب: لا. الطريقة", until="السؤال الرابع", box=(260, 220, 1660, 820),
+        right=dict(title="الضو", value="1", sub="نهار خدمة تقني", icon="bolt", color="green"),
+        left=dict(title="الغاز", value="عادي", sub="الطريقة العادية", icon="flame", color="grey"), gap=2.5),
+   dict(k="people", at="السؤال الرابع", until="الجواب: الكونطرا اللي", box=FULL, people=["elder"],
+        say=[dict(who=0, text="وقعت وندمت", at=0.5, bg="red")]),
+   dict(k="big", text="14", at="الجواب: الكونطرا اللي", until="السؤال الخامس", y=430, size=280, color=GREEN, sub="يوم · صيفط الرجوع بكتابة"),
+   dict(k="people", at="السؤال الخامس", until="الجواب: الثمن القديم", box=FULL, people=["hijab"],
+        say=[dict(who=0, text="تخفيض كبير، بصح؟", at=0.5)]),
+   dict(k="big", text="30", at="الجواب: الثمن القديم", until="السؤال السادس", y=430, size=280, color=GOLD, sub="يوم · أرخص ثمن قبل التخفيض"),
+   dict(k="people", at="السؤال السادس", until="الجواب: لا، كتاخدها", box=FULL, people=["worker"],
+        say=[dict(who=0, text="بديت فيونيو", at=0.5)]),
+   dict(k="steps", at="الجواب: لا، كتاخدها", until="السؤال السابع", box=(260, 220, 1660, 840), steps=[
+     ["الخلصة الخام", "1.500 €"], ["الشهور من يونيو", "7"], ["الطريديشيما الخام", "875 €"]], gap=3.0, check_after=0.6),
+   dict(k="people", at="السؤال السابع", until="الجواب: لا، حتى لدابا", box=FULL, people=["man"],
+        say=[dict(who=0, text="نسجل العائلة دابا؟", at=0.5)]),
+   dict(k="map", view="med", hl=["MAR"], pins=["Fes"], labels=False, at="الجواب: لا، حتى لدابا", until="والسؤال الأخير", box=L_BOX),
+   dict(k="people", at="الجواب: لا، حتى لدابا", until="والسؤال الأخير", box=R_BOX, people=["clerk"],
+        say=[dict(who=0, text="ما كاين تسجيل رسمي", at=0.5, bg="red")]),
+   dict(k="people", at="والسؤال الأخير", until="الجواب: الملء المسبق", box=FULL, people=["office"],
+        say=[dict(who=0, text="باغي نجيب خدام من المغرب", at=0.5)]),
+   dict(k="map", view="north", pins=["Bergamo"], labels=False, at="الجواب: الملء المسبق", until="ودابا، جوج تلاتة", box=L_BOX),
+   dict(k="calendar", at="الجواب: الملء المسبق", until="ومن بعد، الكليك داي", box=R_BOX, day=7, month=12, sub="الملء المسبق · 20:00"),
+   dict(k="calendar", at="ومن بعد، الكليك داي", until="ودابا، جوج تلاتة", box=R_BOX, day=16, month=2, sub="الكليك داي 2027 · 9:00"),
+   dict(k="head", text="أسئلة زايدين", at="ودابا، جوج تلاتة", until="سؤال: شريت من سيت أوروبي", sub="وصلونا بزاف"),
+   dict(k="people", at="ودابا، جوج تلاتة", until="سؤال: شريت من سيت أوروبي", box=FULL, people=["girl", "woman", "elder"],
+        say=[dict(who=1, text="عندي سؤال آخر", at=1.0)]),
+   dict(k="people", at="سؤال: شريت من سيت أوروبي", until="الجواب: لا. هاد المبالغ", box=FULL, people=["man"],
+        say=[dict(who=0, text="شريت من سيت أوروبي", at=0.5)]),
+   dict(k="vs", at="الجواب: لا. هاد المبالغ", until="سؤال: فالبلاك فرايدي", box=(260, 220, 1660, 820),
+        right=dict(title="من برا أوروبا", value="5 €", sub="على كل نوع", icon="plane", color="red"),
+        left=dict(title="من أوروبا", value="0 €", sub="ما كاينش هاد المبلغ", icon="truck", color="green"), gap=2.0),
+   dict(k="people", at="سؤال: فالبلاك فرايدي", until="الجواب: فالحانوت", box=FULL, people=["woman"],
+        say=[dict(who=0, text="ما عجباتنيش، نرجعها؟", at=0.5)]),
+   dict(k="people", at="الجواب: فالحانوت", until="سؤال: شريت تيليفون", box=FULL, people=["clerk", "woman"],
+        say=[dict(who=0, text="كيتوقف على مول الحانوت", at=1.5, bg="gold"), dict(who=1, text="نخلي التيكي", at=6.0, bg="green")]),
+   dict(k="people", at="سؤال: شريت تيليفون", until="الجواب: عندك الضمانة", box=FULL, people=["worker"],
+        say=[dict(who=0, text="التيليفون خسر بوحدو", at=0.5, bg="red")]),
+   dict(k="big", text="2", at="الجواب: عندك الضمانة", until="سؤال: الوالد", y=430, size=280, color=GREEN, sub="سنين ديال الضمانة القانونية"),
+   dict(k="people", at="سؤال: الوالد", until="الجواب: لا، الطريديشيما", box=FULL, people=["elder", "man"],
+        say=[dict(who=1, text="الطريديشيما ديال الواليد؟", at=0.5)]),
+   dict(k="calendar", at="الجواب: لا، الطريديشيما", until="سؤال: صيفطت", box=R_BOX, day=1, month=12, sub="البانسيون والطريديشيما"),
+   dict(k="map", view="italy", pins=["Roma", "Torino", "Bari"], labels=False, at="الجواب: لا، الطريديشيما", until="سؤال: صيفطت", box=L_BOX),
+   dict(k="people", at="سؤال: صيفطت", until="الجواب: التلاتين يوم", box=FULL, people=["worker"],
+        say=[dict(who=0, text="فات شهر وما خرجش", at=0.5)]),
+   dict(k="big", text="30", at="الجواب: التلاتين يوم", until="هادو هوما الأسئلة", y=430, size=280, color=GOLD, sub="يوم · من نهار الملف الكامل"),
+   dict(k="people", at="هادو هوما الأسئلة", box=FULL, people=["man", "hijab"],
+        say=[dict(who=1, text="كتب فالكومونتير", at=1.0, bg="green")]),
+ ]),
+ dict(audio="I.wav", text=T["I"], chapter="08 · الملخص", src=S_HOME, items=[
+   dict(k="head", text="ملخص اليوم", at=0.1, until="واحد: الكولي"),
+   dict(k="people", at=0.3, until="واحد: الكولي", box=FULL, people=["woman", "worker"],
+        say=[dict(who=0, text="عاود ليا المهم", at=0.6)]),
+   dict(k="rows", at="واحد: الكولي", until="النصيحة الكبيرة", y=250, gap=105, size=46, rows=[
+     ("الكولي من برا أوروبا", "5 €", "واحد: الكولي"),
+     ("تجديد البيرميسو", "90", "جوج: البيرميسو"),
+     ("تبديل الضو", "1/12", "تلاتة: الضو"),
+     ("البلاك فرايدي", "27/11", "ربعة: البلاك"),
+     ("البانسيون والطريديشيما", "1/12", "خمسة: دجنبر"),
+     ("السكن فالعروبية", "40.000 DH", "ستة: من المغرب"),
+   ]),
+   dict(k="people", at="النصيحة الكبيرة", until="وها هي التواريخ", box=FULL, people=["elder", "girl"],
+        say=[dict(who=1, text="كتب التواريخ", at=1.0, bg="green")]),
+   dict(k="steps", at="وها هي التواريخ", until="ودابا، سؤال ليك", box=(260, 190, 1660, 860), steps=[
+     ["البلاك فرايدي", "27/11"], ["البانسيون والضو", "1/12"], ["الديكري فلوسي", "7/12"], ["الطريديشيما ديال الدولة", "15/12"], ["الإيمو والكارطا", "16/12"]], gap=2.0, check_after=0.6),
+   dict(k="map", view="med", hl=["ITA", "MAR"], pins=["Milano", "Casablanca"], labels=False, at="ودابا، سؤال ليك", until="وإلى عرفتي شي واحد", box=L_BOX),
+   dict(k="people", at="ودابا، سؤال ليك", until="وإلى عرفتي شي واحد", box=R_BOX, people=["woman", "worker"],
+        say=[dict(who=0, text="كتب لينا فالكومونتير", at=3.0, bg="green")]),
+   dict(k="people", at="وإلى عرفتي شي واحد", until="وإلى عجبك هاد العمل", box=FULL, people=["man", "hijab"],
+        say=[dict(who=0, text="صيفطو لصاحبك", at=1.0, bg="gold")]),
+   dict(k="cta", at="وإلى عجبك هاد العمل", text="ابوني فالقناة", sub="كل نهار خبر مفيد للمغاربة فإيطاليا"),
+ ]),
+]
+
+THUMB = dict(
+  title=[("الكولي: 5 € على كل نوع", (236, 196, 96)), "البيرميسو: 90 يوم قبل", "الضو، البلاك فرايدي ودجنبر"],
+  num="5 €", numsub="على كل نوع فالكولي من برا أوروبا",
+  bottom="مغاربة إيطاليا · خبار مفيدة بالدارجة",
+)
