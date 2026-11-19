@@ -58,8 +58,9 @@ SHIFTS = [-4.0, -3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0]
 
 def heard(x16, a, b):
     a = max(0, int(a * 16000)); b = int(b * 16000)
-    if b - a < 8000: return ""
-    st = ASR.create_stream(); st.accept_waveform(16000, x16[a:b]); ASR.decode_stream(st); return norm(st.result.text)
+    seg = x16[a:b]
+    if len(seg) < 8000: return ""  # finestra oltre la fine dell'audio (segfault di sherpa con array vuoto)
+    st = ASR.create_stream(); st.accept_waveform(16000, seg); ASR.decode_stream(st); return norm(st.result.text)
 
 
 def check_block(name, wav, text, trim_like_render=True, n=None):
