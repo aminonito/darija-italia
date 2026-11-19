@@ -73,7 +73,9 @@ def check_block(name, wav, text, trim_like_render=True, n=None):
     res = []; miss = 0
     for c in pick:
         ca, cb = c[0][1], c[-1][2]; ref = norm(" ".join(w for w, _, _ in c))
-        score = lambda sh: fuzz.partial_ratio(ref, heard(x16, ca + sh + off - 0.1, cb + sh + off + 0.1))
+        def score(sh):  # una trascrizione cortissima (es. una sola parola) dà partial_ratio 100 per caso: la si pesa con ratio
+            h = heard(x16, ca + sh + off - 0.1, cb + sh + off + 0.1)
+            return fuzz.partial_ratio(ref, h) if len(h) >= 0.5 * len(ref) else fuzz.ratio(ref, h)
         sc = {sh: score(sh) for sh in SHIFTS}
         b0 = max(sc, key=sc.get)
         for sh in (b0 - 0.5, b0 + 0.5): sc[sh] = score(sh)
