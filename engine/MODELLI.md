@@ -5,7 +5,7 @@ Esempio completo: `reels/demo-modelli.json`.
 
 | tipo | a cosa serve | campi |
 |---|---|---|
-| `map` | dove succede: regioni, città, rotte Italia-Marocco | `view`: italy · north · south · med; `hl`: regioni (es. "Calabria") o paesi in vista med ("ITA", "MAR"); `pins`: città (o `{"city","label","color"}`); `route`: ["Genova","Tanger","ship"] o ["Milano","Casablanca"] (aereo); `labels`: false per non scrivere i nomi delle regioni |
+| `map` | dove succede: regioni, città, rotte Italia-Marocco | `view`: italy · north · south · med (Italia + Marocco) · maroc (solo Marocco); `hl`: regioni (es. "Calabria") o paesi in vista med ("ITA", "MAR"); `pins`: città (o `{"city","label","color"}`); `route`: ["Genova","Tanger","ship"] o ["Milano","Casablanca"] (aereo); `labels`: false per non scrivere i nomi delle regioni |
 | `people` | chi è coinvolto, dialoghi | `people`: 1-3 ruoli (max 4); `say`: [{"who":0,"text":"...","at":0.6,"bg":"green"}] |
 | `icons` | elenchi di cose (documenti, bollette, servizi) | `items`: [[icona, etichetta, colore?]] 2-4; `gap` s tra un'icona e l'altra |
 | `bars` | confronto di numeri | `bars`: [[etichetta, valore numerico, testo, colore?]] 2-4 |
@@ -30,8 +30,11 @@ receipt-tax report-money scale school ship shopping-cart stethoscope ticket tool
 trending-up truck user users wallet world x. Altre: copiarle da @tabler/icons (npm) in assets/icons.
 
 Regole testo: valori con %, +, ≈, € in stringhe brevi; nei fumetti evitare numeri con segni attaccati a parole arabe.
-Dati mappa: openpolis/geojson-italy (CC BY 4.0, dati ISTAT), Natural Earth (pubblico dominio). La vista med è tagliata
-sopra il 29° parallelo.
+Dati mappa: openpolis/geojson-italy (CC BY 4.0, dati ISTAT), Natural Earth (pubblico dominio). Il Marocco è SEMPRE
+disegnato intero, Sahara compreso fino a Guerguerat, come un solo paese senza linee interne (decisione di Amine del
+19/11/2026): MAR e SAH di Natural Earth vengono fusi, le viste med e maroc arrivano al 20,3° parallelo e check_morocco()
+blocca il render se qualcosa cambia. Città del sud disponibili: Laayoune, Smara, Dakhla, Guerguerat, Tiznit, Guelmim.
+Nella vista med al massimo UNA città del sud (sono vicine e le etichette si sovrappongono): per più città usa view maroc.
 
 ## Versione italiana (ITALIA TIMES, video lunghi 16:9)
 `visuals.configure(lang="it", fonts=..., accent=...)` cambia direzione (sinistra→destra), nomi di città/regioni e mesi in italiano.

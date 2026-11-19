@@ -12,7 +12,7 @@ della scena/elemento) e con opacità a (0-1).
   steps     passi numerati con spunta
 
 Dati mappa: regioni ISTAT via openpolis/geojson-italy (CC BY 4.0), paesi Natural Earth (pubblico dominio).
-La vista "med" è tagliata a nord del 29° parallelo.
+Le viste "med" e "maroc" mostrano il Marocco INTERO, Sahara compreso, senza linee interne (check_morocco()).
 """
 import io, json, math, os
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
@@ -108,7 +108,8 @@ CITY = {"Roma": (12.496, 41.903), "Milano": (9.190, 45.464), "Torino": (7.687, 4
         "Tanger": (-5.834, 35.760), "Tetouan": (-5.368, 35.589), "Nador": (-2.934, 35.168), "Casablanca": (-7.590, 33.573),
         "Rabat": (-6.850, 34.021), "Fes": (-5.008, 34.018), "Marrakech": (-7.981, 31.630), "Agadir": (-9.598, 30.428),
         "Oujda": (-1.909, 34.681), "Meknes": (-5.547, 33.894), "Beni Mellal": (-6.350, 32.337), "Khouribga": (-6.906, 32.881),
-        "El Jadida": (-8.501, 33.232), "Kenitra": (-6.580, 34.261)}
+        "El Jadida": (-8.501, 33.232), "Kenitra": (-6.580, 34.261), "Laayoune": (-13.203, 27.154), "Smara": (-11.662, 26.739),
+        "Dakhla": (-15.957, 23.684), "Guerguerat": (-16.950, 21.370), "Tiznit": (-9.731, 29.698), "Guelmim": (-10.057, 28.987)}
 CITY_AR = {"Roma": "روما", "Milano": "ميلانو", "Torino": "تورينو", "Napoli": "نابولي", "Bologna": "بولونيا", "Firenze": "فلورنسا",
            "Genova": "جنوة", "Venezia": "فينيسيا", "Bari": "باري", "Palermo": "باليرمو", "Catania": "كاتانيا", "Verona": "فيرونا",
            "Brescia": "بريشيا", "Bergamo": "بيرغامو", "Padova": "بادوفا", "Reggio Calabria": "ريدجو كالابريا", "Cagliari": "كالياري",
@@ -116,13 +117,14 @@ CITY_AR = {"Roma": "روما", "Milano": "ميلانو", "Torino": "تورينو
            "Civitavecchia": "تشيفيتافيكيا", "Modena": "مودينا", "Parma": "بارما", "Reggio Emilia": "ريدجو إيميليا",
            "Vicenza": "فيتشينزا", "Treviso": "تريفيزو", "Tanger": "طنجة", "Tetouan": "تطوان", "Nador": "الناظور",
            "Casablanca": "كازا", "Rabat": "الرباط", "Fes": "فاس", "Marrakech": "مراكش", "Agadir": "أكادير", "Oujda": "وجدة",
-           "Meknes": "مكناس", "Beni Mellal": "بني ملال", "Khouribga": "خريبكة", "El Jadida": "الجديدة", "Kenitra": "القنيطرة"}
+           "Meknes": "مكناس", "Beni Mellal": "بني ملال", "Khouribga": "خريبكة", "El Jadida": "الجديدة", "Kenitra": "القنيطرة",
+           "Laayoune": "العيون", "Smara": "السمارة", "Dakhla": "الداخلة", "Guerguerat": "الكركرات", "Tiznit": "تيزنيت", "Guelmim": "كلميم"}
 REG_AR = {"Lombardia": "لومبارديا", "Piemonte": "بييمونتي", "Veneto": "فينيتو", "Emilia-Romagna": "إيميليا رومانيا",
           "Toscana": "توسكانا", "Lazio": "لاتسيو", "Campania": "كامبانيا", "Puglia": "بوليا", "Sicilia": "صقلية",
           "Calabria": "كالابريا", "Sardegna": "سردينيا", "Liguria": "ليغوريا", "Marche": "ماركي", "Abruzzo": "أبروتسو",
           "Umbria": "أومبريا", "Basilicata": "بازيليكاتا", "Molise": "موليزي", "Friuli-Venezia Giulia": "فريولي",
           "Trentino-Alto Adige": "ترينتينو", "Valle d'Aosta": "فالي داوستا", "ITA": "إيطاليا", "MAR": "المغرب"}
-CITY_IT = {"Tanger": "Tangeri", "Tetouan": "Tetuan", "Fes": "Fès", "Meknes": "Meknès", "Marrakech": "Marrakech"}
+CITY_IT = {"Laayoune": "Laâyoune", "Tanger": "Tangeri", "Tetouan": "Tetuan", "Fes": "Fès", "Meknes": "Meknès", "Marrakech": "Marrakech"}
 REG_IT = {"ITA": "Italia", "MAR": "Marocco", "Valle d'Aosta": "Valle d'Aosta"}
 
 
@@ -130,8 +132,12 @@ def city_label(c): return CITY_AR.get(c, c) if rtl() else CITY_IT.get(c, c)
 def reg_label(r): return REG_AR.get(r, r) if rtl() else REG_IT.get(r, r)
 
 
+# Marocco SEMPRE intero, Sahara compreso, fino a Guerguerat/Lagouira, senza linee interne (decisione di Amine del 19/11/2026).
+# Le viste che mostrano il Marocco arrivano a sud fino al 20,3° parallelo; mai tagliarle più a nord.
 VIEWS = {"italy": (6.4, 18.8, 36.4, 47.2), "north": (6.5, 14.0, 43.5, 47.2), "south": (12.2, 18.8, 36.5, 42.6),
-         "med": (-11.0, 19.5, 29.0, 47.5)}
+         "med": (-18.0, 19.5, 20.3, 47.5), "maroc": (-18.0, 0.5, 20.3, 36.6)}
+LABEL_AT = {"MAR": (-6.2, 31.4)}  # scritta del paese al centro del Marocco del nord (non al centro geometrico)
+MOROCCO_VIEWS = ("med", "maroc")
 _mc = {}
 
 
@@ -142,15 +148,50 @@ def _proj(view, box):
     return lambda lon, lat: (ox + (lon - lo0) * k * s, oy + (la1 - lat) * s)
 
 
+_MAR_FULL = None
+
+
+def _morocco_full():
+    """Marocco + Sahara fusi in un unico paese (nessun confine interno)."""
+    global _MAR_FULL
+    if _MAR_FULL is None:
+        from shapely.geometry import Polygon
+        from shapely.ops import unary_union
+        gs = []
+        for c in ("MAR", "SAH"):
+            for p in MAPS["countries"].get(c, []):
+                g = Polygon(p); gs.append(g if g.is_valid else g.buffer(0))
+        u = unary_union([g.buffer(0.02) for g in gs]).buffer(-0.02)
+        parts = [u] if u.geom_type == "Polygon" else list(u.geoms)
+        _MAR_FULL = [list(q.exterior.coords) for q in parts if q.area > 0.01]
+    return _MAR_FULL
+
+
 def _shapes(view):
-    if view == "med":
-        return {c: p for c, p in MAPS["countries"].items() if c not in ("SAH",)}
+    if view in MOROCCO_VIEWS:
+        sh = {c: p for c, p in MAPS["countries"].items() if c not in ("SAH", "MAR")}
+        sh["MAR"] = _morocco_full()
+        return sh
     return MAPS["italy_regions"]
+
+
+def check_morocco(view="med"):
+    """Controllo: il Marocco è un solo paese con il Sahara dentro e la vista non lo taglia. Solleva errore se no."""
+    from shapely.geometry import Polygon, Point
+    sh = _shapes(view); lo0, lo1, la0, la1 = VIEWS[view]
+    assert "SAH" not in sh, "Sahara separato dal Marocco"
+    mar = [Polygon(p) for p in sh["MAR"]]
+    for c in ("Laayoune", "Dakhla", "Guerguerat", "Tanger"):
+        assert any(g.buffer(0.05).contains(Point(*CITY[c])) for g in mar), f"{c} fuori dal Marocco"
+    minlat = min(y for p in sh["MAR"] for x, y in p); minlon = min(x for p in sh["MAR"] for x, y in p)
+    assert la0 <= minlat and lo0 <= minlon, f"vista {view} taglia il Marocco (sud {minlat:.1f}, ovest {minlon:.1f})"
+    return True
 
 
 def _base(view, box):
     key = (view, box)
     if key in _mc: return _mc[key]
+    if view in MOROCCO_VIEWS: check_morocco(view)  # blocca il render se il Marocco è tagliato o diviso
     P = _proj(view, box); x1, y1, x2, y2 = box; SS = 2
     im = Image.new("RGBA", ((x2 - x1) * SS, (y2 - y1) * SS), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
     polys = {}
@@ -215,8 +256,11 @@ def draw_map(lay, box, spec, lt, a=1.0):
         if spec.get("labels", True):
             xs = [x for p in polys[name] for x, _ in p]; ys = [y for p in polys[name] for _, y in p]
             big = max(polys[name], key=len); mx = sum(x for x, _ in big) / len(big); my = sum(y for _, y in big) / len(big)
-            lx, ly = tr(box[0] + mx, box[1] + my)
-            if any(abs(lx - px) < 170 * sz and abs(ly + 40 * sz - py) < 90 * sz for px, py in pin_xy): ly += 70 * sz
+            lx, ly = tr(*P(*LABEL_AT[name])) if name in LABEL_AT else tr(box[0] + mx, box[1] + my)
+            hit = lambda X, Y: any(abs(X - px) < 170 * sz and abs(Y + 40 * sz - py) < 90 * sz for px, py in pin_xy) or \
+                any(abs(X - px) < 210 * sz and abs(Y + 40 * sz - (py - 60 * sz)) < 60 * sz for px, py in pin_xy)
+            for ox, oy in ((0, 0), (110, 0), (110, 60), (0, 70), (-110, 0), (0, -70), (160, 120)):
+                if not hit(lx + ox * sz, ly + oy * sz): lx, ly = lx + ox * sz, ly + oy * sz; break
             _label(L, lx, ly + 40 * sz, reg_label(name), int(al * e), int(36 * sz))
     # rotta
     rt = spec.get("route")
