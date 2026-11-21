@@ -1,0 +1,8 @@
+{
+ "model": "gemini-2.5-flash-preview-tts",
+ "voice": "Sulafat",
+ "ok": [
+  "I"
+ ],
+ "errors": {}
+}
