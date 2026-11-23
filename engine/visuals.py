@@ -562,8 +562,9 @@ def draw_steps(lay, box, spec, lt, a=1.0):
         if j < n - 1 and lt > t0 + 0.3:
             L.line([(cx, cy + r), (cx, cy + rh - r)], fill=(80, 84, 96, aj), width=6)
         done = lt > t0 + spec.get("check_after", 0.45)
-        L.ellipse((cx - r, cy - r, cx + r, cy + r), fill=(GREEN if done else CARD) + (aj,), outline=GREEN + (aj,), width=5)
-        if done: paste(lay, icon("check", int(r * 1.2), WHITE, 3), cx, cy, aj / 255)
+        bad = spec.get("bad"); okc = (RED if bad else GREEN)
+        L.ellipse((cx - r, cy - r, cx + r, cy + r), fill=(okc if done else CARD) + (aj,), outline=okc + (aj,), width=5)
+        if done: paste(lay, icon("x" if bad else "check", int(r * 1.2), WHITE, 3), cx, cy, aj / 255)
         else: L.text((cx, cy + 3), str(j + 1), font=font("Tajawal-Black", r * 1.0), fill=WHITE + (aj,), anchor="mm")
         lab = s if isinstance(s, str) else s[0]
         f = fit(L, lab, "Tajawal-ExtraBold", min(rh * 0.36, 58), (x2 - x1) - r * 2 - 60)
