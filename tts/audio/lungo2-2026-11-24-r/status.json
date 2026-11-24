@@ -1,8 +1,6 @@
 {
  "model": "gemini-2.5-flash-preview-tts",
  "voice": "Kore",
- "ok": [
-  "I"
- ],
+ "ok": [],
  "errors": {}
 }
