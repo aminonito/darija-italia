@@ -42,3 +42,10 @@ Nel motore ITALIA TIMES si usa tramite `engine/bridge_italia_times.py`: in scene
 `import sys; sys.path.insert(0, "/home/claude/darija-italia/engine"); import bridge_italia_times` e poi
 `sc.vis(tipo, t0, t1=None, box=(x1,y1,x2,y2), **campi)` (box default 160,170,1760,880; area utile y 150-880).
 Le etichette delle regioni scendono da sole se c'è una città vicina; con molte città usa `labels=False`.
+
+## Stile del giorno (engine/theme.py) — decisione di Amine del 24/11/2026
+render_reel.py e render16.py scelgono da soli lo stile dalla data nel nome del file:
+lunedì-martedì **casablanca** (nero, rosso/verde, archi) · mercoledì-giovedì **chefchaouen** (blu notte, azzurro, rombi,
+sottotitoli su pillola scura) · venerdì-sabato **sahara** (terra scura, arancio, onde, parola attiva sottolineata) ·
+domenica **zitoun** (verde oliva, oro, puntini). Cambiano sfondo, motivo, aloni, pill del gancio, evidenziazione della
+parola, barra di avanzamento e colori di numeri/barre; logo e modelli grafici restano uguali. THEME=<nome> solo per prove.

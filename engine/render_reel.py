@@ -8,6 +8,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from align import align, key_time
 import visuals as V
+import theme as TH
 
 W, H, FPS = 1080, 1920, 30
 FD = os.environ.get("FONTS", "/home/claude/fonts/")
@@ -28,6 +29,9 @@ def ease_back(x):
 
 
 R = json.load(open(sys.argv[1], encoding="utf-8")); S = R["scenes"]; BRAND = R.get("brand", BRAND)
+# stile del giorno (engine/theme.py): colori, sfondo, sottotitoli
+TT = TH.pick(sys.argv[1]); ACC = TT["accent"]; GOLD = TT["gold"]; GREY = TT["sub"]
+V.configure(accent=GOLD); print("stile del giorno:", TT["name"])
 with wave.open(sys.argv[2]) as w:
     sr = w.getframerate(); X = np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(np.float32) / 32768
 nz = np.where(np.abs(X) > 0.01)[0]; X = X[max(0, nz[0] - int(.05 * sr)): nz[-1] + int(.15 * sr)]
@@ -52,20 +56,7 @@ if cur: CH.append(cur)
 
 
 def bg():
-    y = np.linspace(0, 1, H)[:, None]; x = np.linspace(0, 1, W)[None, :]
-    arr = np.dstack([12 + 10 * y + 0 * x, 14 + 8 * y + 0 * x, 20 + 16 * y + 0 * x])
-    im = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8)).convert("RGBA")
-    pat = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(pat); st = 150
-    for cy in range(0, H + st, st):
-        for cx in range(0, W + st, st):
-            ox = cx + (st // 2 if (cy // st) % 2 else 0)
-            d.arc((ox - 34, cy - 40, ox + 34, cy + 28), 180, 360, fill=(255, 255, 255, 11), width=2)
-            d.line((ox - 34, cy - 6, ox - 34, cy + 46), fill=(255, 255, 255, 11), width=2)
-            d.line((ox + 34, cy - 6, ox + 34, cy + 46), fill=(255, 255, 255, 11), width=2)
-    im = Image.alpha_composite(im, pat)
-    g = Image.new("RGBA", (W, H), (0, 0, 0, 0)); gd = ImageDraw.Draw(g)
-    gd.ellipse((-400, -300, 600, 700), fill=RED + (70,)); gd.ellipse((W - 600, H - 900, W + 400, H + 100), fill=MGREEN + (75,))
-    return Image.alpha_composite(im, g.filter(ImageFilter.GaussianBlur(170)))
+    return TH.background(TT, W, H)
 
 
 def arch(size):
@@ -102,15 +93,16 @@ def frame(t):
         x2 = W - 56 - k * (sw + 10); x1 = x2 - sw
         d.rounded_rectangle((x1, 230, x2, 240), 5, fill=(255, 255, 255, 60))
         fr = 1 if k < i else (min(1, max(0, lt / ((STARTS[k + 1] if k + 1 < len(S) else TOTAL) - STARTS[k]))) if k == i else 0)
-        if fr > 0: d.rounded_rectangle((x2 - sw * fr, 230, x2, 240), 5, fill=WHITE + (255,))
+        if fr > 0: d.rounded_rectangle((x2 - sw * fr, 230, x2, 240), 5, fill=TT["bar"] + (255,))
     img.alpha_composite(pb, (0, 0)); d = ImageDraw.Draw(img)
     lay = Image.new("RGBA", (W, H), (0, 0, 0, 0)); L = ImageDraw.Draw(lay)
     p = ease_back(lt / 0.4)
     if s["hook"]:
         f = font("Tajawal-ExtraBold", 58); tw = L.textlength(s["hook"], font=f); num = f"{i + 1}/{NH}"; fn = font("Tajawal-Bold", 42); nw = L.textlength(num, font=fn)
         wtot = tw + nw + 100; x0 = W / 2 - wtot / 2; y = 400
-        L.rounded_rectangle((x0, y - 62, x0 + wtot, y + 62), 62, fill=RED + (255,))
-        L.rounded_rectangle((x0 + wtot - nw - 46, y - 52, x0 + wtot - 10, y + 52), 52, fill=(0, 0, 0, 80))
+        pr = int(62 * TT["pill_r"]) + 8
+        L.rounded_rectangle((x0, y - 62, x0 + wtot, y + 62), pr, fill=ACC + (255,))
+        L.rounded_rectangle((x0 + wtot - nw - 46, y - 52, x0 + wtot - 10, y + 52), max(6, pr - 10), fill=(0, 0, 0, 80))
         L.text((x0 + wtot - nw / 2 - 28, y), num, font=fn, fill=WHITE + (230,), anchor="mm")
         L.text((x0 + (wtot - nw - 46) / 2 + 10, y + 2), s["hook"], font=f, fill=WHITE + (255,), anchor="mm")
     if s.get("v"):  # modello grafico (mappa, personaggi, icone, barre, calendario, confronto, passi)
@@ -147,10 +139,14 @@ def finish(img, d, t, i, s):
                 if totw <= 980 or fz <= 50: break
                 fz -= 4
             x = W / 2 + totw / 2
+            if TT["cap"] == "pill":  # riga intera su una pillola scura
+                pl = Image.new("RGBA", img.size, (0, 0, 0, 0)); ImageDraw.Draw(pl).rounded_rectangle(
+                    (W / 2 - totw / 2 - 34, 1350, W / 2 + totw / 2 + 34, 1500), 40, fill=(0, 0, 0, 140))
+                img.alpha_composite(pl); d = ImageDraw.Draw(img)
             for (w, a, b, _), wd in zip(c, ws):
-                x -= wd
-                if a <= t < b + 0.05: d.rounded_rectangle((x - 10, 1360, x + wd + 10, 1490), 22, fill=RED + (255,))
-                d.text((x + wd / 2, 1425), w, font=f, fill=WHITE + (255,), anchor="mm", stroke_width=4, stroke_fill=(0, 0, 0))
+                x -= wd; tc = WHITE
+                if a <= t < b + 0.05: tc = TH.word_mark(d, TT, x - 10, 1360, x + wd + 10, 1490, 22)
+                d.text((x + wd / 2, 1425), w, font=f, fill=tc + (255,), anchor="mm", stroke_width=4, stroke_fill=(0, 0, 0))
                 x -= sp
             break
     src = s.get("src", R.get("src_default", ""))

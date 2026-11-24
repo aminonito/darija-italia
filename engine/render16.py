@@ -15,12 +15,16 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from align import align, key_time
 import visuals as V
+import theme as TH
 
 W, H, FPS = 1920, 1080, 30
 CX = W // 2
 FD = os.environ.get("FONTS", "/home/claude/fonts/")
 RED = (206, 43, 55); GREEN = (0, 166, 81); MGREEN = (0, 98, 51); WHITE = (245, 245, 242)
 GREY = (175, 175, 182); DIM = (95, 95, 102); GOLD = (236, 196, 96)
+# stile del giorno (engine/theme.py): sfondo, evidenziazione, colori dei numeri e delle barre
+TT = TH.pick(sys.argv[1] if len(sys.argv) > 1 else ""); GOLD = TT["gold"]; GREEN = TT["bar"]; MGREEN = TT["bar2"]
+V.configure(accent=GOLD)
 LEAD, TAIL, OUTRO = 0.45, 0.45, 3.0
 _fc = {}
 
@@ -82,22 +86,7 @@ def kt(i, key):
 
 # ---------------- sfondo e header ----------------
 def make_bg():
-    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
-    arr = np.zeros((H, W, 3), np.float32) + np.array([12, 14, 20], np.float32)
-    arr += (yy / H)[..., None] * np.array([6, 6, 12], np.float32)
-    rng = np.random.default_rng(3); arr += rng.normal(0, 1.1, (H, W, 1))
-    img = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8)).convert("RGBA")
-    pat = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(pat); step = 150
-    for cy in range(0, H + step, step):
-        for cx in range(0, W + step, step):
-            ox = cx + (step // 2 if (cy // step) % 2 else 0)
-            d.arc((ox - 34, cy - 40, ox + 34, cy + 28), 150, 30, fill=(255, 255, 255, 9), width=2)
-            d.line((ox - 30, cy - 3, ox - 30, cy + 46), fill=(255, 255, 255, 9), width=2)
-            d.line((ox + 30, cy - 3, ox + 30, cy + 46), fill=(255, 255, 255, 9), width=2)
-    img = Image.alpha_composite(img, pat)
-    glow = Image.new("RGBA", (W, H), (0, 0, 0, 0)); g = ImageDraw.Draw(glow)
-    g.ellipse((-400, -400, 700, 500), fill=RED + (55,)); g.ellipse((W - 700, H - 500, W + 400, H + 400), fill=MGREEN + (60,))
-    return Image.alpha_composite(img, glow.filter(ImageFilter.GaussianBlur(180)))
+    return TH.background(TT, W, H, alpha=9, glow_boxes=((-400, -400, 700, 500), (W - 700, H - 500, W + 400, H + 400)), blur=180)
 
 
 def arch(size, col=RED):
@@ -158,10 +147,10 @@ def draw_caption(img, chunks, t):
     d.rounded_rectangle([CX - tot / 2 - 34, 22, CX + tot / 2 + 34, 118], 26, fill=(0, 0, 0, 120))
     x = CX + tot / 2
     for (w, a, b), wd in zip(cur, ws):
-        x -= wd
+        x -= wd; tc = WHITE
         if a <= t < b:
-            d.rounded_rectangle([x - 8, 30, x + wd + 8, 110], 16, fill=RED + (255,))
-        d.text((x + wd / 2, 70), w, font=f, fill=WHITE + (255,), anchor="mm")
+            tc = TH.word_mark(d, TT, x - 8, 30, x + wd + 8, 110, 16)
+        d.text((x + wd / 2, 70), w, font=f, fill=tc + (255,), anchor="mm")
         x -= sp
     img.alpha_composite(lay, (0, 900))
 
