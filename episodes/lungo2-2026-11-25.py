@@ -75,7 +75,7 @@ BLOCKS = [
      ("اللائحة النهائية", "09", "والتاسع، لائحة"),
    ]),
    dict(k="icons", at="وكل معلومة فهاد الفيديو", until="وعقل مزيان", box=ICB, items=[
-     ["scale", "قانون الجنسية", "blue"], ["building-bank", "الوزارات", "gold"], ["home", "الكومونات", "green"], ["file-text", "القانون المغربي", "blue"]], gap=2.0),
+     ["scale", "قانون الجنسية", "blue"], ["building-bank", "الوزارات", "gold"], ["home", "الكومونات", "green"], ["file-text", "القانون المغربي", "blue"]], gap=2.0, cols=4),
    dict(k="warn", text="محتوى إخباري · ماشي استشارة قانونية", at="وعقل مزيان", until="وحاجة أخيرة قبل ما نبداو", y=600),
    dict(k="people", at="وحاجة أخيرة قبل ما نبداو", until=None, box=FULL, people=["woman", "man"],
         say=[dict(who=0, text="كتب سؤالك", at=1.0, bg="green"), dict(who=1, text="صيفطو للعائلة", at=6.0, bg="gold")]),
@@ -84,8 +84,8 @@ BLOCKS = [
  dict(audio="B.wav", text=T["B"], chapter="02 · الشروط", src=S_REQ, items=[
    dict(k="chapter", num="02", title="الشروط بالتفصيل", at=0.1, until="القانون ديال الجنسية الإيطالية"),
    dict(k="big", text="91/1992", sub="قانون الجنسية الإيطالية · المادة 4", at="القانون ديال الجنسية الإيطالية", until="يعني عندنا تلاتة ديال الشروط"),
-   dict(k="steps", at="يعني عندنا تلاتة ديال الشروط", until="ودابا الخبر المزيان", box=MID, steps=[
-     ["تزاد فإيطاليا", "1"], ["الإقامة القانونية بلا انقطاع", "2"], ["الإعلان من 18 حتى 19", "3"]], gap=9.0, check_after=0.6),
+   dict(k="steps", at="يعني عندنا تلاتة ديال الشروط", until="الشرط الأول: يكون تزاد", box=MID, steps=[
+     ["تزاد فإيطاليا", "1"], ["الإقامة القانونية بلا انقطاع", "2"], ["الإعلان من 18 حتى 19", "3"]], gap=1.2, check_after=0.6),
    dict(k="map", at="الشرط الأول: يكون تزاد", until="الشرط التاني: الإقامة", box=L_BOX, **IT_ALL),
    dict(k="icons", at="والإقامة القانونية كتعني", until="والشرط التالت: الإعلان", box=ICB, items=[
      ["license", "البيرميسو", "blue"], ["home", "الريزيدينسا", "green"]], gap=3.0),
@@ -125,11 +125,11 @@ BLOCKS = [
         say=[dict(who=0, text="باغي موعد", at=1.5, bg="gold"), dict(who=1, text="الحالة المدنية", at=4.0, bg="blue")]),
    dict(k="icons", at="وإلى ما لقيتيش موعد", until="دابا الوراق اللي كيطلبو", box=ICB, items=[
      ["mail", "الإيميل", "blue"], ["mailbox", "البيك", "green"], ["file-text", "دليل بلي طلبتي", "gold"]], gap=2.5),
-   dict(k="steps", at="دابا الوراق اللي كيطلبو", until="وشنو هوما الوثائق", box=MID, steps=[
-     ["عقد الازدياد ولا تصريح", "1"], ["الباسبور والبيرميسو", "2"], ["الدليل على الإقامة", "3"], ["الوصل ديال 250 €", "4"]], gap=8.0, check_after=0.6),
+   dict(k="steps", at="دابا الوراق اللي كيطلبو", until="والوثيقة الرابعة: الوصل", box=MID, steps=[
+     ["عقد الازدياد ولا تصريح", "1"], ["الباسبور والبيرميسو", "2"], ["الدليل على الإقامة", "3"], ["الوصل", "4"]], gap=8.0, check_after=0.6),
    dict(k="big", text="250 €", sub="لوزارة الداخلية", at="والوثيقة الرابعة: الوصل", until="وشنو هوما الوثائق"),
    dict(k="icons", at="وشنو هوما الوثائق", until="ونصيحة عملية", box=ICB, items=[
-     ["license", "البيرميسوات", "blue"], ["stethoscope", "التلقيح", "green"], ["building-hospital", "السبيطار", "gold"], ["school", "المدرسة", "blue"]], gap=2.0),
+     ["license", "البيرميسوات", "blue"], ["stethoscope", "التلقيح", "green"], ["building-hospital", "السبيطار", "gold"], ["school", "المدرسة", "blue"]], gap=2.0, cols=4),
    dict(k="people", at="ونصيحة عملية", until="ودير نسخ من كلشي", box=FULL, people=["hijab", "child"],
         say=[dict(who=0, text="ملف فالدار", at=1.5, bg="gold"), dict(who=1, text="كل عام", at=5.0, bg="green")]),
    dict(k="warn", text="نسخ · الأصول عندك", at="ودير نسخ من كلشي", until="دابا الطريق التانية، ديال الولاد", y=560),
@@ -150,7 +150,7 @@ BLOCKS = [
    dict(k="chapter", num="04", title="المغرب والقنصلية", at=0.1, until="هاد الجزء مهم"),
    dict(k="people", at="هاد الجزء مهم", until="نبداو بالقانون المغربي", box=FULL, people=["elder", "woman"],
         say=[dict(who=0, text="غادي يضيع المغربية؟", at=3.0, bg="red")]),
-   dict(k="map", at="نبداو بالقانون المغربي", until="يعني الولد اللي تزاد فإيطاليا من أب", box=BIGMAP, **MAROC),
+   dict(k="map", at="نبداو بالقانون المغربي", until="فالفصل السادس", box=BIGMAP, **MAROC),
    dict(k="big", text="6", sub="الفصل · قانون الجنسية المغربية", at="فالفصل السادس", until="يعني الولد اللي تزاد فإيطاليا من أب"),
    dict(k="vs", at="يعني الولد اللي تزاد فإيطاليا من أب", until="وحاجة مهمة للأمهات", box=VSB,
         right=dict(title="من أب مغربي", value="مغربي", sub="من الولادة", icon="user", color="green"),
@@ -167,7 +167,7 @@ BLOCKS = [
    dict(k="people", at="التصريح يقدر يديرو", until="الوثائق اللي كتطلبها القنصلية", box=R_BOX, people=["man", "clerk"],
         say=[dict(who=0, text="موعد أونلاين", at=3.0, bg="green"), dict(who=1, text="التصريح بالولادة", at=7.0, bg="blue")]),
    dict(k="icons", at="الوثائق اللي كتطلبها القنصلية", until="وإلى بغاو الترجمة", box=ICB, items=[
-     ["file-text", "الدفتر العائلي", "gold"], ["file-certificate", "عقد الازدياد", "blue"], ["id", "البطاقة الوطنية", "green"], ["heart", "عقد الزواج", "gold"]], gap=1.8),
+     ["file-text", "الدفتر العائلي", "gold"], ["file-certificate", "عقد الازدياد", "blue"], ["id", "البطاقة الوطنية", "green"], ["heart", "عقد الزواج", "gold"]], gap=1.8, cols=4),
    dict(k="people", at="وإلى بغاو الترجمة", until="وإلى ما سجلتيهش فالوقت", box=FULL, people=["woman", "clerk"],
         say=[dict(who=0, text="الترجمة؟", at=0.8, bg="gold"), dict(who=1, text="سولي قبل", at=3.0, bg="blue")]),
    dict(k="vs", at="وإلى ما سجلتيهش فالوقت", until="ومن بعد التسجيل", box=VSB,
@@ -226,7 +226,7 @@ BLOCKS = [
    dict(k="warn", text="الإقامة تقطعات · سول مختص", at="هنا الإقامة تقطعات", until="الحالة الرابعة: الولد جا صغير", y=560),
    dict(k="map", at="الحالة الرابعة: الولد جا صغير", until="عندو جوج ديال الإمكانيات", box=BIGMAP, **MED_MI),
    dict(k="vs", at="عندو جوج ديال الإمكانيات", until="الحالة الخامسة: الولد كبير", box=VSB,
-        right=dict(title="مع الواليد", value="قاصر", sub="+ جوج سنين", icon="users", color="green"),
+        right=dict(title="مع الواليد", value="قاصر", sub="وجوج سنين ديال الإقامة", icon="users", color="green"),
         left=dict(title="بوحدو ملي يكبر", value="10 سنين", sub="الإقامة + المدخول + اللغة", icon="user", color="gold"), gap=6.0),
    dict(k="people", at="الحالة الخامسة: الولد كبير", until="الحالة السادسة: الواليدين", box=FULL, people=["elder", "student"],
         say=[dict(who=0, text="خديت الجنسية", at=1.5, bg="gold"), dict(who=1, text="20 عام · بوحدي", at=4.5, bg="red")]),
@@ -310,7 +310,7 @@ BLOCKS = [
    dict(k="people", at="السؤال التامن، من عبد الله", until="الجواب: إلى حلفتي", box=FULL, people=["elder", "student"],
         say=[dict(who=1, text="17 عام", at=2.0, bg="gold")]),
    dict(k="vs", at="الجواب: إلى حلفتي", until="السؤال التاسع، من سلمى", box=VSB,
-        right=dict(title="حلف الواليد قبل", value="مع الواليد", sub="قاصر + جوج سنين", icon="users", color="green"),
+        right=dict(title="حلف الواليد قبل", value="مع الواليد", sub="قاصر وجوج سنين", icon="users", color="green"),
         left=dict(title="كمل 18 قبل", value="الإعلان", sub="تزاد وعاش هنا", icon="user", color="gold"), gap=8.0),
    dict(k="map", at="السؤال التاسع، من سلمى", until="الجواب: الغياب الطويل", box=BIGMAP, **MED_TO),
    dict(k="warn", text="الغياب الطويل · سول مختص", at="الجواب: الغياب الطويل", until="والسؤال العاشر", y=560),
