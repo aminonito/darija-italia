@@ -49,3 +49,11 @@ lunedì-martedì **casablanca** (nero, rosso/verde, archi) · mercoledì-gioved�
 sottotitoli su pillola scura) · venerdì-sabato **sahara** (terra scura, arancio, onde, parola attiva sottolineata) ·
 domenica **zitoun** (verde oliva, oro, puntini). Cambiano sfondo, motivo, aloni, pill del gancio, evidenziazione della
 parola, barra di avanzamento e colori di numeri/barre; logo e modelli grafici restano uguali. THEME=<nome> solo per prove.
+
+## doc — il documento vero (25/11/2026)
+Foglio chiaro stilizzato di un documento italiano con le voci scritte come sul foglio vero (caratteri latini):
+`{"type":"doc","title":"BUSTA PAGA","rows":["LIVELLO","FERIE / PERMESSI","TFR","NETTO"],"focus":2,"tag":"01 · TFR","done":[0,1],"warn":[],"at":0.5}`
+- focus = voce evidenziata (barra colorata), tag = etichetta rossa sotto il foglio, done = spunte verdi, warn = x rosse.
+- Usalo in 3-4 scene di FILA con lo stesso title/rows e focus diverso (conto alla rovescia 03 → 02 → 01): il foglio
+  resta e lo spettatore impara a leggere il SUO documento. Esempi: BUSTA PAGA, CU, BOLLETTA LUCE, PERMESSO DI SOGGIORNO,
+  RICEVUTA POSTE, CONTRATTO D'AFFITTO, CEDOLINO PENSIONE, ATTESTAZIONE ISEE, F24.

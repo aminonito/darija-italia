@@ -575,7 +575,53 @@ def draw_steps(lay, box, spec, lt, a=1.0):
                    anchor="lm" if rtl() else "rm")
 
 
-DRAW = {"map": draw_map, "people": draw_people, "icons": draw_icons, "bars": draw_bars, "calendar": draw_calendar,
+
+# ---------------- documento vero (busta paga, permesso, bolletta…) ----------------
+def draw_doc(lay, box, spec, lt, a=1.0):
+    """Foglio stilizzato di un documento italiano, con le voci scritte come sul foglio vero (in caratteri latini).
+    spec: title ("BUSTA PAGA"), rows (lista di voci), focus (indice della voce da evidenziare, opzionale),
+    tag (es. "03 · LIVELLO": etichetta che compare sulla voce evidenziata), done (indici già controllati: spunta verde),
+    warn (indici con problema: x rossa), at (secondi prima dell'evidenziazione, default 0.5), tilt (gradi, default -2).
+    Usalo in più scene di fila con lo stesso title/rows e focus diverso: il foglio resta, cambia la voce."""
+    x1, y1, x2, y2 = box; rows = spec["rows"]; n = len(rows); al = int(255 * a)
+    W0, H0 = int(x2 - x1), int(y2 - y1)
+    pw = int(min(W0 * 0.8, H0 * 0.8 / 1.15)); ph = int(pw * 1.15)
+    sheet = Image.new("RGBA", (pw + 80, ph + 80), (0, 0, 0, 0)); D = ImageDraw.Draw(sheet)
+    e0 = ease_back(lt / 0.45); ox, oy = 40, 40
+    D.rounded_rectangle((ox + 10, oy + 14, ox + pw + 10, oy + ph + 14), 22, fill=(0, 0, 0, 90))
+    D.rounded_rectangle((ox, oy, ox + pw, oy + ph), 22, fill=(246, 241, 230, 255))
+    ft = fit(D, spec.get("title", ""), "Tajawal-Black", pw * 0.085, pw * 0.86)
+    D.text((ox + pw / 2, oy + ph * 0.1), spec.get("title", ""), font=ft, fill=(40, 40, 46, 255), anchor="mm")
+    D.line((ox + pw * 0.08, oy + ph * 0.18, ox + pw * 0.92, oy + ph * 0.18), fill=(40, 40, 46, 120), width=3)
+    rh = ph * 0.74 / n; foc = spec.get("focus"); at = spec.get("at", 0.5)
+    ef = ease((lt - at) / 0.35) if foc is not None else 0
+    for j, r in enumerate(rows):
+        cy = oy + ph * 0.22 + rh * (j + 0.5)
+        if j == foc and ef > 0:
+            bx = ox + pw * 0.04 - 6 * ef
+            D.rounded_rectangle((bx, cy - rh * 0.36, bx + (pw * 0.92 + 12) * ef, cy + rh * 0.36), 14, fill=GOLD + (255,))
+        fr = fit(D, r, "Tajawal-ExtraBold", min(rh * 0.36, pw * 0.07), pw * 0.62)
+        tc = (25, 25, 30, 255) if (j == foc and ef > 0.5) else (60, 60, 68, 255)
+        D.text((ox + pw * 0.08, cy), r, font=fr, fill=tc, anchor="lm")
+        bs = rh * 0.34; bx2 = ox + pw * 0.9
+        D.rounded_rectangle((bx2 - bs, cy - bs / 2, bx2, cy + bs / 2), 6, fill=(215, 205, 190, 255))
+        mk = "check" if j in spec.get("done", []) else ("x" if j in spec.get("warn", []) else None)
+        if mk:
+            ic = icon(mk, int(bs * 1.1), GREEN if mk == "check" else RED, 3.0); paste(sheet, ic, bx2 - bs / 2, cy)
+    sc = 0.6 + 0.4 * e0; tilt = spec.get("tilt", -2)
+    im = sheet.resize((max(1, int(sheet.width * sc)), max(1, int(sheet.height * sc))), Image.LANCZOS).rotate(tilt, expand=True, resample=Image.BICUBIC)
+    paste(lay, im, (x1 + x2) / 2, (y1 + y2) / 2 - (60 if spec.get("tag") else 0), al / 255 * min(1, lt / 0.2 + 0.01))
+    tag = spec.get("tag")
+    if tag and foc is not None and lt > at + 0.25:
+        e2 = ease_back((lt - at - 0.25) / 0.4); L = ImageDraw.Draw(lay)
+        f = font("Tajawal-Black", min(64, pw * 0.08)); tw = L.textlength(tag, font=f)
+        cy = (y1 + y2) / 2 - 60 + (ph / 2 + 40) * sc + 10  # sotto il foglio
+        cx = (x1 + x2) / 2; hw = (tw / 2 + 40) * max(0.05, e2)
+        L.rounded_rectangle((cx - hw, cy, cx + hw, cy + 100), 28, fill=RED + (al,))
+        if e2 > 0.6: L.text((cx, cy + 52), tag, font=f, fill=WHITE + (al,), anchor="mm")
+
+
+DRAW = {"doc": draw_doc, "map": draw_map, "people": draw_people, "icons": draw_icons, "bars": draw_bars, "calendar": draw_calendar,
         "vs": draw_vs, "steps": draw_steps}
 
 
