@@ -2,7 +2,7 @@
  "title": "قرا الإتيكيطا فالبلاك فرايداي",
  "brand": "مغاربة إيطاليا",
  "voice": "Iapetus",
- "src_default": "Codice del consumo art. 17-bis · Quotidiano di Ragusa · Affaritaliani",
+ "src_default": "Codice consumo 17-bis · Affaritaliani · Q. di Ragusa",
  "scenes": [
   {
    "hook": "البلاك فرايداي: شوف الثمن القديم",
@@ -113,7 +113,7 @@
      "icon": "check",
      "color": "green"
     },
-    "gap": 1.5
+    "gap": 0.5
    },
    "big": "",
    "sub": "200 € · 160 €"
@@ -137,8 +137,8 @@
       "30/11"
      ]
     ],
-    "gap": 1.8,
-    "t": 0.8
+    "gap": 1.0,
+    "t": 0.3
    },
    "big": "",
    "sub": ""
