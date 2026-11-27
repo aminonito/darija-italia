@@ -594,6 +594,7 @@ def draw_doc(lay, box, spec, lt, a=1.0):
     D.text((ox + pw / 2, oy + ph * 0.1), spec.get("title", ""), font=ft, fill=(40, 40, 46, 255), anchor="mm")
     D.line((ox + pw * 0.08, oy + ph * 0.18, ox + pw * 0.92, oy + ph * 0.18), fill=(40, 40, 46, 120), width=3)
     rh = ph * 0.74 / n; foc = spec.get("focus"); at = spec.get("at", 0.5)
+    if not isinstance(at, (int, float)): at = spec.get("doc_at", 0.5)  # nei lunghi "at" e la parola chiave
     ef = ease((lt - at) / 0.35) if foc is not None else 0
     for j, r in enumerate(rows):
         cy = oy + ph * 0.22 + rh * (j + 0.5)
