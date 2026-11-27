@@ -29,7 +29,7 @@ N_TO = dict(view="north", pins=["Torino"], labels=False)
 N_BO = dict(view="north", pins=["Bologna"], labels=False)
 N_MI = dict(view="north", pins=["Milano"], labels=False)
 N_BS = dict(view="north", pins=["Brescia"], labels=False)
-IT_ALL = dict(view="italy", pins=["Torino", "Bologna", "Brescia"], labels=False)
+IT_ALL = dict(view="north", pins=["Torino", "Bologna", "Brescia"], labels=False)
 IT_RM = dict(view="italy", pins=["Roma"], labels=False)
 
 DOC_ROWS = ["STATO CIVILE", "PERMESSO", "INIZIO SOGGIORNO", "ASSENZE", "REDDITI", "DICHIARAZIONI"]
@@ -142,7 +142,7 @@ BLOCKS = [
    ]),
    dict(k="map", at="عبد القادر وزهرة فميلانو: مزوجين", until="الحد ديال المزوجين هو", box=L_BOX, **N_MI),
    dict(k="people", at="عبد القادر وزهرة فميلانو: مزوجين", until="الحد ديال المزوجين هو", box=R_BOX, people=["elder", "woman"],
-        say=[dict(who=1, text="9.000 € بجوج", at=2.0, bg="gold")]),
+        say=[dict(who=1, text="9.000 أورو بجوج", at=2.0, bg="gold")]),
    dict(k="rows", at="الحد ديال المزوجين هو", until="ولو كان الدخل ديالهم صغير", y=300, gap=125, size=46, rows=[
      ("الحد ديال المزوجين", "14.202,24 €", "الحد ديال المزوجين هو"),
      ("الدخل بجوج", "9.000 €", "نحيدو تسع آلاف", RED),
@@ -241,7 +241,7 @@ BLOCKS = [
      ["العمر", "1"], ["الكارطا", "2"], ["10 سنين", "3"], ["الدخل", "4"]], gap=1.3, check_after=0.5),
    dict(k="icons", at="الخطوة التانية: دير الطلب", until="والأرقام كتبان فالشاشة", box=ICB, items=[
      ["world", "السيت ديال الإينبس", "blue"], ["phone", "الكونطاكت سونطر", "gold"], ["building-bank", "الباترونا", "green"]], gap=3.0),
-   dict(k="big", text="803 164", sub="من الثابت · 06 164 164 من البورطابل", at="والأرقام كتبان فالشاشة", until="والطريقة التالتة: الباترونا", size=180),
+   dict(k="stats", stats=[("803 164", "التيليفون الثابت", None), ("06 164 164", "البورطابل", "وواحد للبورطابل")], at="والأرقام كتبان فالشاشة", until="والطريقة التالتة: الباترونا"),
    dict(k="people", at="والطريقة التالتة: الباترونا", until="الخطوة التالتة: الجواب", box=FULL, people=["office", "elder"],
         say=[dict(who=1, text="عندي دخل من المغرب", at=1.5, bg="gold"), dict(who=0, text="نعمرو كلشي مزيان", at=5.5, bg="green")]),
    dict(k="big", text="45", sub="يوم باش يجاوب الإينبس", at="الخطوة التالتة: الجواب", until="وفهاد المدة، ما تبقاش"),
@@ -285,10 +285,10 @@ BLOCKS = [
    dict(k="big", text="10", sub="أخطاء كيضيعو الفلوس", at="ودابا الأخطاء", until="الغلط الأول", color=RED),
    dict(k="steps", at="الغلط الأول", until="الغلط السادس", box=MID, steps=[
      ["البيرميسو ديال الخدمة", "1"], ["10 سنين بلا بيرميسو", "2"], ["غياب بلا ورقة", "3"], ["البانسيون المغربية", "4"], ["الكرا ديال المغرب", "5"]],
-        gap=3.5, bad=True, check_after=0.4),
+        gap=4.3, bad=True, check_after=0.4),
    dict(k="steps", at="الغلط السادس", until="وشنو دير إلى ترفض", box=MID, steps=[
      ["سفر أكثر من 29 يوم", "6"], ["التصريح ديال كل عام", "7"], ["تعطيل الطلب", "8"], ["وسيط بالفلوس", "9"], ["الرسائل ديال الإينبس", "10"]],
-        gap=4.0, bad=True, check_after=0.4),
+        gap=4.3, bad=True, check_after=0.4),
    dict(k="steps", at="وشنو دير إلى ترفض", until="وإلى الإينبس طلب منك", box=MID, steps=[
      ["اقرا السبب", "1"], ["صحح ودير طلب جديد", "2"], ["الطعن مع الباترونا", "3"]], gap=4.0, check_after=0.6),
    dict(k="people", at="وإلى الإينبس طلب منك", until="وتذكر: الأسينيو", box=FULL, people=["elder", "office"],
@@ -351,7 +351,7 @@ BLOCKS = [
  # ---------------------------------------------------------------- 09
  dict(audio="I.wav", text=T["I"], chapter="09 · اللائحة النهائية", src=S_HOME, items=[
    dict(k="chapter", num="09", title="اللائحة النهائية", at=0.1, until="واحد: تأكد من العمر"),
-   dict(k="rows", at="واحد: تأكد من العمر", until="وعاود معايا الأرقام", y=160, gap=82, size=42, rows=[
+   dict(k="rows", at="واحد: تأكد من العمر", until="وعاود معايا الأرقام", y=195, gap=78, size=42, rows=[
      ("67 عام نهار الطلب", "1", "واحد: تأكد"),
      ("الكارطا", "2", "جوج: تأكد"),
      ("العشر سنين والسفرات", "3", "تلاتة: حسب"),
