@@ -1,0 +1,163 @@
+{
+ "title": "قرا الإتيكيطا فالبلاك فرايداي",
+ "brand": "مغاربة إيطاليا",
+ "voice": "Iapetus",
+ "src_default": "Codice del consumo art. 17-bis · Quotidiano di Ragusa · Affaritaliani",
+ "scenes": [
+  {
+   "hook": "البلاك فرايداي: شوف الثمن القديم",
+   "text": "عندك شي حاجة باغي تشريها فالبلاك فرايداي اليوم؟ قبل ما تخلص، قرا معايا الإتيكيطا ديال الثمن.",
+   "v": {
+    "type": "people",
+    "people": [
+     "woman",
+     "man"
+    ],
+    "say": [
+     {
+      "who": 0,
+      "text": "هاد الصولد بصح؟",
+      "at": 0.3
+     },
+     {
+      "who": 1,
+      "text": "شوف الثمن القديم",
+      "at": 3.0,
+      "bg": "green"
+     }
+    ]
+   },
+   "big": "",
+   "sub": ""
+  },
+  {
+   "hook": "الثمن القديم",
+   "text": "القانون كيقول: الثمن القديم اللي مكتوب، خاصو يكون أرخص ثمن تباعت بيه هاد الحاجة فالتلاتين يوم اللي قبل الصولد.",
+   "v": {
+    "type": "doc",
+    "title": "CARTELLINO PREZZO",
+    "rows": [
+     "PREZZO PRECEDENTE",
+     "SCONTO %",
+     "PREZZO FINALE"
+    ],
+    "focus": 0,
+    "tag": "03 · PREZZO PRECEDENTE",
+    "done": [],
+    "warn": [],
+    "at": 0.3
+   },
+   "big": "",
+   "sub": "= MINIMO 30 GIORNI"
+  },
+  {
+   "hook": "النسبة ديال الصولد",
+   "text": "والنسبة ديال الصولد خاصها تتحسب على هاد الثمن، ماشي على ثمن طلعوه قبل بأيام.",
+   "v": {
+    "type": "doc",
+    "title": "CARTELLINO PREZZO",
+    "rows": [
+     "PREZZO PRECEDENTE",
+     "SCONTO %",
+     "PREZZO FINALE"
+    ],
+    "focus": 1,
+    "tag": "02 · SCONTO",
+    "done": [
+     0
+    ],
+    "warn": [],
+    "at": 0.2
+   },
+   "big": "",
+   "sub": "SCONTO SU PREZZO 30 GIORNI"
+  },
+  {
+   "hook": "مثال: صولد كذاب",
+   "text": "مثلا تيليفون كان بميتين أورو، طلعوه لميتين وخمسين، ومن بعد كتبو ناقص عشرين فالمية. الثمن رجع ميتين: ما ربحتي والو.",
+   "v": {
+    "type": "doc",
+    "title": "CARTELLINO PREZZO",
+    "rows": [
+     "PREZZO PRECEDENTE",
+     "SCONTO %",
+     "PREZZO FINALE"
+    ],
+    "focus": 2,
+    "tag": "01 · PREZZO FINALE",
+    "done": [
+     0
+    ],
+    "warn": [
+     1
+    ],
+    "at": 0.2
+   },
+   "big": "",
+   "sub": "PREZZO FINALE: 200 €"
+  },
+  {
+   "hook": "الصولد الصحيح",
+   "text": "الصولد الصحيح: كان بميتين، ولا بمية وستين. ربحتي ربعين أورو.",
+   "v": {
+    "type": "vs",
+    "right": {
+     "title": "صولد كذاب",
+     "value": "0 €",
+     "icon": "x",
+     "color": "red"
+    },
+    "left": {
+     "title": "صولد صحيح",
+     "value": "40 €",
+     "icon": "check",
+     "color": "green"
+    },
+    "gap": 1.5
+   },
+   "big": "",
+   "sub": "200 € · 160 €"
+  },
+  {
+   "hook": "شري أونلاين؟ 14 يوم",
+   "text": "وإلى شريتي أونلاين، عندك أربعطاش يوم من نهار توصلك باش ترجعها. والسايبر مانداي نهار الاثنين تلاتين نونبر.",
+   "v": {
+    "type": "steps",
+    "steps": [
+     [
+      "البلاك فرايداي",
+      "27/11"
+     ],
+     [
+      "ترجع أونلاين",
+      "14"
+     ],
+     [
+      "السايبر مانداي",
+      "30/11"
+     ]
+    ],
+    "gap": 1.8,
+    "t": 0.8
+   },
+   "big": "",
+   "sub": ""
+  },
+  {
+   "hook": "",
+   "big": "تابعنا",
+   "sub": "صيفطو لشي واحد خاصو يعرف",
+   "text": "شفتي شي صولد كذاب؟ صيفطو لشي واحد خاصو يعرف، وتابع مغاربة إيطاليا.",
+   "v": {
+    "type": "map",
+    "view": "med",
+    "route": [
+     "Casablanca",
+     "Milano"
+    ],
+    "pins": [],
+    "dur": 2.2
+   }
+  }
+ ]
+}
