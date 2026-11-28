@@ -1,0 +1,149 @@
+{
+ "title": "الأكونطو التاني ديال الفورفيتاريو",
+ "brand": "مغاربة إيطاليا",
+ "voice": "Sulafat",
+ "src_default": "PartitaIva.it · InformazioneFiscale · QuiFinanza",
+ "scenes": [
+  {
+   "hook": "30 نونبر: الأكونطو التاني",
+   "text": "عندك البارتيتا إيفا فالفورفيتاريو؟ نهار الاثنين تلاتين نونبر آخر نهار تخلص التسبيق التاني ديال الضريبة.",
+   "v": {
+    "type": "people",
+    "people": [
+     "worker",
+     "hijab"
+    ],
+    "say": [
+     {
+      "who": 0,
+      "text": "شنو نكتب فالإيف 24؟",
+      "at": 0.3
+     },
+     {
+      "who": 1,
+      "text": "قبل الاثنين!",
+      "at": 3.2,
+      "bg": "red"
+     }
+    ]
+   },
+   "big": "",
+   "sub": ""
+  },
+  {
+   "hook": "الكود ديال الضريبة",
+   "text": "قرا معايا الإيف فينتي كواطرو. الكود ديال التسبيق التاني هو ألف وسبع مية وواحد وتسعين.",
+   "v": {
+    "type": "doc",
+    "title": "F24 · FORFETTARI",
+    "rows": [
+     "CODICE TRIBUTO",
+     "ANNO DI RIFERIMENTO",
+     "IMPORTI A DEBITO"
+    ],
+    "focus": 0,
+    "tag": "03 · CODICE TRIBUTO",
+    "done": [],
+    "warn": [],
+    "at": 0.2
+   },
+   "big": "",
+   "sub": "CODICE TRIBUTO 1791"
+  },
+  {
+   "hook": "العام",
+   "text": "وفالخانة ديال العام كتكتب ألفين وستة وعشرين.",
+   "v": {
+    "type": "doc",
+    "title": "F24 · FORFETTARI",
+    "rows": [
+     "CODICE TRIBUTO",
+     "ANNO DI RIFERIMENTO",
+     "IMPORTI A DEBITO"
+    ],
+    "focus": 1,
+    "tag": "02 · ANNO",
+    "done": [
+     0
+    ],
+    "warn": [],
+    "at": 0.2
+   },
+   "big": "",
+   "sub": "ANNO DI RIFERIMENTO 2026"
+  },
+  {
+   "hook": "شحال تخلص؟",
+   "text": "والمبلغ؟ التسبيق كيتقسم على جوج: النص فيونيو والنص دابا. مثلا الضريبة ديالك ألف وست مية أورو: تمن مية فيونيو، وتمن مية دابا.",
+   "v": {
+    "type": "doc",
+    "title": "F24 · FORFETTARI",
+    "rows": [
+     "CODICE TRIBUTO",
+     "ANNO DI RIFERIMENTO",
+     "IMPORTI A DEBITO"
+    ],
+    "focus": 2,
+    "tag": "01 · IMPORTO",
+    "done": [
+     0,
+     1
+    ],
+    "warn": [],
+    "at": 0.2
+   },
+   "big": "",
+   "sub": "1.600 € ÷ 2 = 800 €"
+  },
+  {
+   "hook": "والخدام؟",
+   "text": "والخدام ولا المتقاعد؟ إلى كان خاصو يخلص، كيتنقص ليه من الخلصة ولا البانسيون ديال نونبر.",
+   "v": {
+    "type": "vs",
+    "right": {
+     "title": "بارتيتا إيفا",
+     "value": "F24",
+     "icon": "receipt-tax",
+     "color": "red"
+    },
+    "left": {
+     "title": "خدام ولا متقاعد",
+     "value": "الخلصة",
+     "icon": "wallet",
+     "color": "green"
+    },
+    "gap": 0.8
+   },
+   "big": "",
+   "sub": ""
+  },
+  {
+   "hook": "ما كيتقسمش",
+   "text": "ردّ البال: هاد التسبيق ما كيتقسمش على شهور. إلى تعطلتي، خلص بسرعة بالرافيدمينطو باش تكون الخطية صغيرة.",
+   "v": {
+    "type": "calendar",
+    "day": 30,
+    "month": 11,
+    "sub": "آخر أجل"
+   },
+   "big": "",
+   "sub": "RAVVEDIMENTO OPEROSO"
+  },
+  {
+   "hook": "",
+   "big": "تابعنا",
+   "sub": "صيفطو لشي واحد خاصو يعرف",
+   "text": "خلصتي ولا باقي؟ صيفطو لشي واحد خاصو يعرف، وتابع مغاربة إيطاليا.",
+   "v": {
+    "type": "map",
+    "view": "med",
+    "route": [
+     "Casablanca",
+     "Milano"
+    ],
+    "pins": [],
+    "dur": 2.2
+   }
+  }
+ ]
+}
