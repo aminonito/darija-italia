@@ -5,7 +5,7 @@
  "src_default": "Codice della Strada art. 202 · SicurAUTO",
  "scenes": [
   {
-   "hook": "الخطية بـ30% أقل",
+   "hook": "ناقص 30 فالمية فالخطية",
    "text": "جاتك شي خطية ديال الطوموبيل فإيطاليا؟ إلى خلصتيها بكري، كتنقص ليك تلاتين فالمية.",
    "v": {
     "type": "people",
@@ -112,7 +112,7 @@
      "icon": "alert-triangle",
      "color": "red"
     },
-    "gap": 1.5
+    "gap": 0.8
    },
    "big": "",
    "sub": ""
